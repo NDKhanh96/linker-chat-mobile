@@ -1,0 +1,44 @@
+{
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports":"always"
+    },
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "tailwindCSS.experimental.classRegex": [
+        ["tva\\(([^)]*)\\)", "{?\\s?[\\w].*:\\s*?[\"'`]([^\"'`]*).*?,?\\s?}?"]
+    ],
+    "cSpell.words": [
+        ".easignore",
+        "clsx",
+        "Entypo",
+        "extrablack",
+        "Favourite",
+        "flatlist",
+        "Fontisto",
+        "forwardslash",
+        "hookform",
+        "Ionicons",
+        "jscodeshift",
+        "logomark",
+        "lucide",
+        "notifee",
+        "paperplane",
+        "Pressable",
+        "reduxjs",
+        "roboto",
+        "romaji",
+        "Tamagui",
+        "unimodules",
+        "unistyles",
+    ],
+    "cSpell.ignorePaths": [
+        "yarn.lock",
+        "package-lock.json",
+        "node_modules/**",
+        ".gitignore",
+        ".env",
+        ".easignore",
+    ]
+}

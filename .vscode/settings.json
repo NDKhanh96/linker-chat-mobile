@@ -18,6 +18,7 @@
         "flatlist",
         "Fontisto",
         "forwardslash",
+        "gluestack",
         "hookform",
         "Ionicons",
         "jscodeshift",
@@ -31,7 +32,7 @@
         "romaji",
         "Tamagui",
         "unimodules",
-        "unistyles",
+        "unistyles"
     ],
     "cSpell.ignorePaths": [
         "yarn.lock",

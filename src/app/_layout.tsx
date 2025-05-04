@@ -1,3 +1,5 @@
+import '~root/global.css';
+
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -6,6 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux';
+import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
 import { useColorScheme } from '~/components/useColorScheme';
 import { store } from '~/redux/store';
@@ -46,20 +49,27 @@ export default function RootLayout() {
         return null;
     }
 
-    return <RootLayoutNav />;
+    return (
+        <Provider store={store()}>
+            <RootLayoutNav />
+        </Provider>
+    );
 }
 
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
 
+    /**
+     * mode needs to be set to system for enable switching between light and dark mode
+     */
     return (
-        <Provider store={store()}>
+        <GluestackUIProvider mode="system">
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <Stack>
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
                 </Stack>
             </ThemeProvider>
-        </Provider>
+        </GluestackUIProvider>
     );
 }

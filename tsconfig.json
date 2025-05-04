@@ -25,6 +25,6 @@
         "**/*.ts",
         "**/*.tsx",
         ".expo/types/**/*.ts",
-        "expo-env.d.ts"
-, "src/components/__tests__/StyledText-test.js"    ]
+        "expo-env.d.ts",
+    ]
 }

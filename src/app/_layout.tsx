@@ -6,11 +6,11 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux';
 import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
-import { useColorScheme } from '~/components/useColorScheme';
 import { store } from '~/redux/store';
 
 export {
@@ -18,9 +18,15 @@ export {
     ErrorBoundary,
 } from 'expo-router';
 
+/**
+ * unstable_settings chưa dùng được với async router là nguyên nhân nó tên là unstable.
+ * https://docs.expo.dev/router/reference/async-routes/
+ */
 export const unstable_settings = {
-    // Ensure that reloading on `/modal` keeps a back button present.
-    initialRouteName: '(tabs)',
+    /**
+     * Để đảm bảo rằng tải lại các màn hình khác thì sẽ đều có nút back về initialRouteName.
+     */
+    initialRouteName: '(auth)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -65,9 +71,8 @@ function RootLayoutNav() {
     return (
         <GluestackUIProvider mode="system">
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <Stack>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+                <Stack initialRouteName="(auth)">
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                 </Stack>
             </ThemeProvider>
         </GluestackUIProvider>

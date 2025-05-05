@@ -4,7 +4,7 @@
 
 import { render } from '@testing-library/react-native';
 
-import TabOneScreen from '~/app/(tabs)/index';
+import TabOneScreen from '~/app/(auth)';
 
 describe('<TabOneScreen />', () => {
     test('Text renders correctly on TabOneScreen', () => {

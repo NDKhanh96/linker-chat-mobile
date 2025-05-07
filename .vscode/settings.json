@@ -7,7 +7,8 @@
     },
     "typescript.preferences.preferTypeOnlyAutoImports": true,
     "tailwindCSS.experimental.classRegex": [
-      ["tva\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+      "className:\\s*['\"]([^'\"]*)['\"]",
+      ["tva\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ],
     "cSpell.words": [
         ".easignore",

@@ -3,7 +3,14 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView, useColorScheme } from 'react-native';
+import {
+    KeyboardAvoidingView as DefaultKeyboardAvoidingView,
+    Text as DefaultText,
+    View as DefaultView,
+    Platform,
+    ScrollView,
+    useColorScheme,
+} from 'react-native';
 
 import Colors from '~utils/constants/colors';
 
@@ -14,6 +21,7 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type KeyboardAvoidingViewProps = ThemeProps & DefaultKeyboardAvoidingView['props'];
 
 export function useThemeColor(props: { light?: string; dark?: string }, colorName: keyof typeof Colors.light & keyof typeof Colors.dark) {
     const theme = useColorScheme() ?? 'light';
@@ -38,4 +46,15 @@ export function View(props: ViewProps) {
     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
     return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function KeyboardAvoidingScrollView(props: KeyboardAvoidingViewProps) {
+    const { style, lightColor, darkColor, ...otherProps } = props;
+    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+
+    return (
+        <ScrollView contentContainerClassName="grow">
+            <DefaultKeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={[{ backgroundColor }, style]} {...otherProps} />
+        </ScrollView>
+    );
 }

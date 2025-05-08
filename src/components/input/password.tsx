@@ -10,18 +10,32 @@ type PasswordInputProps = {
      * Props cho view container (kế thừa toàn bộ từ component View của react native).
      */
     inputProps?: React.ComponentProps<typeof Input>;
+
     /**
      * Props cho input field (kế thừa toàn bộ từ component TextInput của react native).
      */
     inputFieldProps?: React.ComponentProps<typeof InputField>;
+
     /**
-     * Props cho pressable (kế thừa toàn bộ từ component Pressable của react native).
+     * Props cho pressable bên trái (kế thừa toàn bộ từ component Pressable của react native).
      */
-    inputSlotProps?: React.ComponentProps<typeof InputSlot>;
+    inputSlotLeftProps?: React.ComponentProps<typeof InputSlot>;
+
     /**
-     * Props cho view chứa icon (kế thừa toàn bộ từ component View của react native).
+     * Props cho pressable bên phải (kế thừa toàn bộ từ component Pressable của react native).
      */
-    inputIconProps?: React.ComponentProps<typeof InputIcon>;
+    inputSlotRightProps?: React.ComponentProps<typeof InputSlot>;
+
+    /**
+     * Props cho view chứa icon bên trái (kế thừa toàn bộ từ component View của react native).
+     */
+    iconLeftProps?: React.ComponentProps<typeof InputIcon>;
+
+    /**
+     * Props cho view chứa icon bên phải (kế thừa toàn bộ từ component View của react native).
+     */
+    iconRightProps?: React.ComponentProps<typeof InputIcon>;
+
     /**
      * Text hiển thị lỗi.
      */
@@ -32,7 +46,7 @@ type PasswordInputProps = {
  * Input dành cho password, có icon hiện/ẩn password.
  */
 export const InputPassword = (props: PasswordInputProps) => {
-    const { inputProps, inputFieldProps, inputSlotProps, inputIconProps, errorText } = props;
+    const { inputProps, inputFieldProps, inputSlotLeftProps, inputSlotRightProps, iconLeftProps, iconRightProps, errorText } = props;
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -43,10 +57,14 @@ export const InputPassword = (props: PasswordInputProps) => {
     return (
         <>
             <Input {...inputProps}>
+                <InputSlot className="pl-3" {...inputSlotLeftProps}>
+                    <InputIcon {...iconLeftProps} />
+                </InputSlot>
+
                 <InputField type={showPassword ? 'text' : 'password'} {...inputFieldProps} />
 
-                <InputSlot onPress={onPressEyeIcon} {...inputSlotProps}>
-                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} {...inputIconProps} />
+                <InputSlot onPress={onPressEyeIcon} {...inputSlotRightProps}>
+                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} {...iconRightProps} />
                 </InputSlot>
             </Input>
 

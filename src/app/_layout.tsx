@@ -9,9 +9,9 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux';
-import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
 import { store } from '~/redux/store';
+import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
 export {
     // Catch any errors thrown by the Layout component.

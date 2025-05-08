@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import type { FieldError } from 'react-hook-form';
+import { TextValidateError } from '~components/text';
 
 import { EyeIcon, EyeOffIcon } from '~components/ui/icon';
 import { Input, InputField, InputIcon, InputSlot } from '~components/ui/input';
@@ -20,13 +22,17 @@ type PasswordInputProps = {
      * Props cho view chứa icon (kế thừa toàn bộ từ component View của react native).
      */
     inputIconProps?: React.ComponentProps<typeof InputIcon>;
+    /**
+     * Text hiển thị lỗi.
+     */
+    errorText?: FieldError;
 };
 
 /**
  * Input dành cho password, có icon hiện/ẩn password.
  */
 export const InputPassword = (props: PasswordInputProps) => {
-    const { inputProps, inputFieldProps, inputSlotProps, inputIconProps } = props;
+    const { inputProps, inputFieldProps, inputSlotProps, inputIconProps, errorText } = props;
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -35,12 +41,16 @@ export const InputPassword = (props: PasswordInputProps) => {
     };
 
     return (
-        <Input {...inputProps}>
-            <InputField type={showPassword ? 'text' : 'password'} {...inputFieldProps} />
+        <>
+            <Input {...inputProps}>
+                <InputField type={showPassword ? 'text' : 'password'} {...inputFieldProps} />
 
-            <InputSlot onPress={onPressEyeIcon} {...inputSlotProps}>
-                <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} {...inputIconProps} />
-            </InputSlot>
-        </Input>
+                <InputSlot onPress={onPressEyeIcon} {...inputSlotProps}>
+                    <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} {...inputIconProps} />
+                </InputSlot>
+            </Input>
+
+            <TextValidateError content={errorText} lightColor="red" darkColor="red" />
+        </>
     );
 };

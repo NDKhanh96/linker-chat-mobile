@@ -31,9 +31,11 @@ export const InputBase = (props: PasswordInputProps) => {
     return (
         <>
             <Input {...inputProps}>
-                <InputSlot className="pl-3">
-                    <InputIcon {...iconProps} />
-                </InputSlot>
+                {iconProps ? (
+                    <InputSlot className="pl-3">
+                        <InputIcon {...iconProps} />
+                    </InputSlot>
+                ) : null}
 
                 <InputField {...inputFieldProps} />
             </Input>

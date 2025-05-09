@@ -57,9 +57,11 @@ export const InputPassword = (props: PasswordInputProps) => {
     return (
         <>
             <Input {...inputProps}>
-                <InputSlot className="pl-3" {...inputSlotLeftProps}>
-                    <InputIcon {...iconLeftProps} />
-                </InputSlot>
+                {iconLeftProps ? (
+                    <InputSlot className="pl-3" {...inputSlotLeftProps}>
+                        <InputIcon {...iconLeftProps} />
+                    </InputSlot>
+                ) : null}
 
                 <InputField type={showPassword ? 'text' : 'password'} {...inputFieldProps} />
 

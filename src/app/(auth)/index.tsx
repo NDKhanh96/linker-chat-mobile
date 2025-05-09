@@ -118,7 +118,7 @@ export default function Login(): React.JSX.Element {
                 />
 
                 <Link href={'/(auth)/forgot-password'} className="text-sky-500 self-end">
-                    {t('auth.forgot_password')}
+                    {t('auth.forgot_password') + '?'}
                 </Link>
 
                 <ButtonGradientLoading

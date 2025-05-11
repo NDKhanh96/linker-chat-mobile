@@ -11,6 +11,7 @@ import 'react-native-reanimated';
 import { Provider } from 'react-redux';
 
 import { store } from '~/redux/store';
+import { SafeAreaView } from '~components/themed';
 import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
 export {
@@ -71,9 +72,11 @@ function RootLayoutNav() {
     return (
         <GluestackUIProvider mode="system">
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <Stack initialRouteName="(auth)">
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                </Stack>
+                <SafeAreaView className="flex-1">
+                    <Stack initialRouteName="(auth)">
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    </Stack>
+                </SafeAreaView>
             </ThemeProvider>
         </GluestackUIProvider>
     );

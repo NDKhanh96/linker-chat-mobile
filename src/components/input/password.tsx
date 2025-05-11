@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FieldError } from 'react-hook-form';
 import { TextValidateError } from '~components/text';
+import { Text, View } from '~components/themed';
 
 import { EyeIcon, EyeOffIcon } from '~components/ui/icon';
 import { Input, InputField, InputIcon, InputSlot } from '~components/ui/input';
@@ -40,13 +41,25 @@ type PasswordInputProps = {
      * Text hiển thị lỗi.
      */
     errorText?: FieldError;
+
+    /**
+     * Label của input.
+     */
+    label?: string;
+
+    /**
+     * Hiển thị * đỏ.
+     * Lưu ý: Nếu không có label thì không hiển thị.
+     * Lưu ý 2: Chỉ hiển thị giao diện chứ không tham gia logic validation.
+     */
+    required?: boolean;
 };
 
 /**
  * Input dành cho password, có icon hiện/ẩn password.
  */
 export const InputPassword = (props: PasswordInputProps) => {
-    const { inputProps, inputFieldProps, inputSlotLeftProps, inputSlotRightProps, iconLeftProps, iconRightProps, errorText } = props;
+    const { inputProps, inputFieldProps, inputSlotLeftProps, inputSlotRightProps, iconLeftProps, iconRightProps, errorText, label, required } = props;
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -55,7 +68,18 @@ export const InputPassword = (props: PasswordInputProps) => {
     };
 
     return (
-        <>
+        <View className="gap-y-3">
+            {label ? (
+                <Text className="text-base font-semibold">
+                    {label}
+                    {required ? (
+                        <Text darkColor="red" lightColor="red">
+                            *
+                        </Text>
+                    ) : null}
+                </Text>
+            ) : null}
+
             <Input {...inputProps}>
                 {iconLeftProps ? (
                     <InputSlot className="pl-3" {...inputSlotLeftProps}>
@@ -71,6 +95,6 @@ export const InputPassword = (props: PasswordInputProps) => {
             </Input>
 
             <TextValidateError content={errorText} lightColor="red" darkColor="red" />
-        </>
+        </View>
     );
 };

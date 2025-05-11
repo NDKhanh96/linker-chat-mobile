@@ -11,6 +11,7 @@ import {
     ScrollView,
     useColorScheme,
 } from 'react-native';
+import { SafeAreaView as DefaultSafeAreaView } from 'react-native-safe-area-context';
 
 import Colors from '~utils/constants/colors';
 
@@ -21,6 +22,7 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type SafeAreaViewProps = ThemeProps & React.ComponentProps<typeof DefaultSafeAreaView>;
 export type KeyboardAvoidingViewProps = ThemeProps & DefaultKeyboardAvoidingView['props'];
 
 export function useThemeColor(props: { light?: string; dark?: string }, colorName: keyof typeof Colors.light & keyof typeof Colors.dark) {
@@ -46,6 +48,13 @@ export function View(props: ViewProps) {
     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
     return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function SafeAreaView(props: ViewProps) {
+    const { style, lightColor, darkColor, ...otherProps } = props;
+    const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+
+    return <DefaultSafeAreaView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
 export function KeyboardAvoidingScrollView(props: KeyboardAvoidingViewProps) {

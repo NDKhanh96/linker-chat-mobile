@@ -12,9 +12,6 @@
     "lint-fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "ts-check": "npx tsc --noEmit"
   },
-  "jest": {
-    "preset": "jest-expo"
-  },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@gluestack-ui/button": "^1.0.14",

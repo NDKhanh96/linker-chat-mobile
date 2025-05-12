@@ -18,7 +18,7 @@ export const t = i18n.t.bind(i18n);
  * Mặc định là tiếng Anh.
  * Nếu ngôn ngữ hiện tại không có trong danh sách ngôn ngữ hỗ trợ thì sẽ sử dụng tiếng Anh.
  */
-i18n.locale = getLocales()[0].languageCode ?? 'en';
+i18n.locale = getLocales()[0]?.languageCode ?? 'en';
 
 /**
  * Khi một giá trị bị thiếu trong một ngôn ngữ, nó sẽ quay lại một ngôn ngữ khác với khoá hiện có.

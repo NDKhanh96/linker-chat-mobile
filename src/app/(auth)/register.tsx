@@ -4,15 +4,22 @@ import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform } from 'react-native';
 import type { z } from 'zod';
+
+import { useRegisterMutation } from '~/services';
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { AvatarPicker } from '~components/picker';
-
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
+import { useErrorToast } from '~components/toast';
+import { getErrorMessage } from '~utils/error-handle';
 import { registerSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
 export default function Register(): React.JSX.Element {
+    const errorToast = useErrorToast();
+
+    const [register] = useRegisterMutation();
+
     const {
         control,
         handleSubmit,
@@ -20,9 +27,17 @@ export default function Register(): React.JSX.Element {
     } = useForm<z.infer<typeof registerSchema>>({ resolver: zodResolver(registerSchema) });
 
     const handleRegister = async (data: z.infer<typeof registerSchema>) => {
-        // TODO: Handle reset password logic here
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log(data);
+        const res = await register(data);
+
+        if (res.error) {
+            const message = getErrorMessage(res.error);
+
+            errorToast(message);
+
+            return;
+        }
+
+        // TODO: navigate to home
     };
 
     return (

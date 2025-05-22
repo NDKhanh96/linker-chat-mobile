@@ -1,12 +1,8 @@
 import { createSlice, type ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
-type InitialState = {
-    isLoading: boolean;
-};
+type InitialState = unknown;
 
-const initialState: InitialState = {
-    isLoading: false,
-};
+const initialState: InitialState = {};
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -21,4 +17,5 @@ export const authSlice = createSlice({
     extraReducers(builder: ActionReducerMapBuilder<InitialState>): void {},
 });
 
+// eslint-disable-next-line no-empty-pattern
 export const {} = authSlice.actions;

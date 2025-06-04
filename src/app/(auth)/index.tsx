@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import type { z } from 'zod';
 
+import { useLoginMutation } from '~/services';
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
@@ -30,6 +31,8 @@ const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
 export default function Login(): React.JSX.Element {
     const colorScheme = useColorScheme();
 
+    const [login] = useLoginMutation();
+
     const {
         control,
         handleSubmit,
@@ -37,9 +40,12 @@ export default function Login(): React.JSX.Element {
     } = useForm<z.infer<typeof loginSchema>>({ resolver: zodResolver(loginSchema) });
 
     const handleLogin = async (data: z.infer<typeof loginSchema>) => {
-        // TODO: Handle login logic here
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log(data);
+        const res = await login(data);
+
+        if (res.data) {
+            // Handle successful login, e.g., navigate to the main app screen
+            console.log('Login successful:', res.data);
+        }
     };
 
     const handleSocialMediaLogin = async (platform: string) => {

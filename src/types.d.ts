@@ -10,3 +10,25 @@ export type Account = {
         avatar: string;
     };
 };
+
+export type LoginAppMfa = {
+    authToken: {
+        accessToken: string;
+        refreshToken: string;
+    };
+    email: string;
+    enableAppMfa: boolean;
+    isCredential: boolean;
+    id: number;
+};
+
+export type LoginJwt = {
+    authToken: {
+        accessToken: string;
+        refreshToken: string;
+    };
+    email: string;
+    enableAppMfa: boolean;
+    isCredential: boolean;
+    id: number;
+};

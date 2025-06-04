@@ -1,8 +1,9 @@
+import * as SecureStore from 'expo-secure-store';
 import type { z } from 'zod';
 
-import type { Account } from '~/types';
+import type { Account, LoginAppMfa, LoginJwt } from '~/types';
 import { API } from '~utils/configs';
-import { registerSchema } from '~utils/form-schema';
+import type { loginSchema, registerSchema } from '~utils/form-schema';
 
 export const registerApi = API.injectEndpoints({
     endpoints: build => ({
@@ -16,9 +17,27 @@ export const registerApi = API.injectEndpoints({
                 return response;
             },
         }),
-        // Thêm các endpoint khác ở đây
+        login: build.mutation<LoginJwt | LoginAppMfa, z.infer<typeof loginSchema>>({
+            query: body => ({
+                url: 'auth/login',
+                method: 'POST',
+                body,
+            }),
+            transformResponse(response: LoginJwt | LoginAppMfa) {
+                SecureStore.setItemAsync('accessToken', response.authToken.accessToken);
+                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken);
+
+                return response;
+            },
+        }),
+        googleLogin: build.mutation<LoginJwt | LoginAppMfa, void>({
+            query: () => ({
+                url: `auth/google/login`,
+                method: 'GET',
+            }),
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useRegisterMutation } = registerApi;
+export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation } = registerApi;

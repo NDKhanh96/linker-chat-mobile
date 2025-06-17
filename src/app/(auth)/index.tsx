@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import type { z } from 'zod';
 
+import { useOAuth } from '~/hooks';
 import { useLoginMutation } from '~/services';
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
@@ -31,6 +32,8 @@ const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
 export default function Login(): React.JSX.Element {
     const colorScheme = useColorScheme();
 
+    const { promptAsync, whenComplete } = useOAuth('google');
+
     const [login] = useLoginMutation();
 
     const {
@@ -49,9 +52,10 @@ export default function Login(): React.JSX.Element {
     };
 
     const handleSocialMediaLogin = async (platform: string) => {
-        // TODO: Handle social media login logic here
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log(platform);
+        if (platform === 'google') {
+            await promptAsync();
+            whenComplete((result, error) => console.log(result, error));
+        }
     };
 
     return (

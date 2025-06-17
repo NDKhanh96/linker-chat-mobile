@@ -30,14 +30,8 @@ export const registerApi = API.injectEndpoints({
                 return response;
             },
         }),
-        googleLogin: build.mutation<LoginJwt | LoginAppMfa, void>({
-            query: () => ({
-                url: `auth/google/login`,
-                method: 'GET',
-            }),
-        }),
     }),
     overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation } = registerApi;
+export const { useRegisterMutation, useLoginMutation } = registerApi;

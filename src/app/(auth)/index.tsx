@@ -8,10 +8,12 @@ import type { z } from 'zod';
 
 import { useOAuth } from '~/hooks';
 import { useLoginMutation } from '~/services';
+import type { OAuthPlatform } from '~/types';
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
+import { useErrorToast } from '~components/toast';
 import { Image } from '~components/ui/image';
 import { loginSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
@@ -20,42 +22,52 @@ type SocialMediaIcon = {
     name: keyof typeof AntDesign.glyphMap;
     color: { light: string; dark: string };
     size: number;
-    platform: string;
+    platform: OAuthPlatform;
 };
 
 const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
     { name: 'google', color: { light: '#EF4444', dark: '#EF4444' }, size: 24, platform: 'google' },
     { name: 'facebook-square', color: { light: '#2463EB', dark: '#2463EB' }, size: 24, platform: 'facebook' },
-    { name: 'github', color: { light: 'black', dark: 'white' }, size: 24, platform: 'gitHub' },
+    { name: 'github', color: { light: 'black', dark: 'white' }, size: 24, platform: 'github' },
 ];
 
 export default function Login(): React.JSX.Element {
     const colorScheme = useColorScheme();
-
-    const { promptAsync, whenComplete } = useOAuth('google');
-
+    const errorToast = useErrorToast();
     const [login] = useLoginMutation();
-
+    const oAuth = useOAuth();
     const {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<z.infer<typeof loginSchema>>({ resolver: zodResolver(loginSchema) });
 
-    const handleLogin = async (data: z.infer<typeof loginSchema>) => {
+    const pressCredentialLogin = async (data: z.infer<typeof loginSchema>) => {
         const res = await login(data);
 
         if (res.data) {
-            // Handle successful login, e.g., navigate to the main app screen
-            console.log('Login successful:', res.data);
+            handleLogin(res.data);
         }
     };
 
-    const handleSocialMediaLogin = async (platform: string) => {
-        if (platform === 'google') {
-            await promptAsync();
-            whenComplete((result, error) => console.log(result, error));
-        }
+    const pressSocialMediaLogin = async (platform: keyof typeof oAuth) => {
+        const { promptAsync, whenComplete } = oAuth[platform];
+
+        await promptAsync();
+        whenComplete(({ data, error }) => {
+            if (error) {
+                errorToast(error?.message);
+
+                return;
+            }
+
+            handleLogin(data);
+        });
+    };
+
+    const handleLogin = (result: unknown) => {
+        // TODO: Handle successful login, e.g., navigate to the main app screen
+        console.log('Login result:', result);
     };
 
     return (
@@ -136,7 +148,7 @@ export default function Login(): React.JSX.Element {
                     isLoading={isSubmitting}
                     loadingText={t('auth.logging_in')}
                     buttonProps={{
-                        onPress: handleSubmit(handleLogin),
+                        onPress: handleSubmit(pressCredentialLogin),
                         disabled: isSubmitting,
                     }}
                     linearGradientProps={{
@@ -161,7 +173,7 @@ export default function Login(): React.JSX.Element {
                         <TouchableOpacity
                             key={index}
                             className="border border-gray-200 flex-1 rounded-lg items-center justify-center h-12"
-                            onPress={() => handleSocialMediaLogin(platform)}
+                            onPress={() => pressSocialMediaLogin(platform)}
                         >
                             <AntDesign name={name} size={size} color={colorScheme === 'dark' ? color.dark : color.light} />
                         </TouchableOpacity>

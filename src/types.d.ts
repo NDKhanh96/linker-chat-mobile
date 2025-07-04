@@ -32,3 +32,5 @@ export type LoginJwt = {
     isCredential: boolean;
     id: number;
 };
+
+export type OAuthPlatform = 'google' | 'facebook' | 'github';

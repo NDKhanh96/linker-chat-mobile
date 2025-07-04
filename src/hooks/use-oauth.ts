@@ -1,16 +1,30 @@
 import { makeRedirectUri, useAuthRequest, type AuthRequest, type AuthRequestPromptOptions, type AuthSessionResult } from 'expo-auth-session';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { OAuthPlatform } from '~/types';
 import { BASE_URL } from '~utils/environment';
 
 type UseOAuthReturn = {
     request: AuthRequest | null;
     response: AuthSessionResult | null;
-    result: AuthSessionResult | null;
-    error: Error | null;
+    result: AuthSessionResult | null | undefined;
+    error: Error | null | undefined;
     promptAsync: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult>;
-    whenComplete: (cb: (data: AuthSessionResult | null, error: Error | null) => void) => void;
+    whenComplete: (cb: (param: OAuthResponse) => void) => void;
 };
+
+type OAuthProviderConfig = {
+    config: {
+        clientId: OAuthPlatform;
+        scopes: string[];
+        redirectUri: string;
+    };
+    discovery: {
+        authorizationEndpoint: string;
+    };
+};
+
+type OAuthResponse = { data: AuthSessionResult; error: null } | { data: null; error: Error };
 
 /**
  * Dự án này áp dụng kiến trúc BFF (Backend-for-Frontend).
@@ -23,7 +37,7 @@ type UseOAuthReturn = {
  * - Xử lý response từ Google (tạo JWT, set cookie, v.v.)
  * - Trả về kết quả cho frontend (web/native)
  */
-const configs = {
+const configs: Record<OAuthPlatform, OAuthProviderConfig> = {
     google: {
         config: {
             clientId: 'google',
@@ -41,7 +55,7 @@ const configs = {
             redirectUri: makeRedirectUri(),
         },
         discovery: {
-            authorizationEndpoint: `${BASE_URL}/auth/facebook/authorize`,
+            authorizationEndpoint: `${BASE_URL}/auth/social/login`,
         },
     },
     github: {
@@ -51,12 +65,15 @@ const configs = {
             redirectUri: makeRedirectUri(),
         },
         discovery: {
-            authorizationEndpoint: `${BASE_URL}/auth/github/authorize`,
+            authorizationEndpoint: `${BASE_URL}/auth/social/login`,
         },
     },
 };
 
-async function fetchToken(
+/**
+ * Lấy token từ backend của dự án chứ không phải từ server của social login service.
+ */
+async function fetchTokenFromProjectBackend(
     provider: keyof typeof configs,
     code: string,
     codeVerifier: string | undefined,
@@ -94,34 +111,37 @@ async function fetchToken(
  * promptAsync: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult> - Hàm để khởi tạo quá trình xác thực OAuth, có thể nhận các tùy chọn bổ sung.
  * whenComplete: (cb: (data: AuthSessionResult | null, error: Error | null) => void) => void - Hàm để đăng ký callback sẽ được gọi khi quá trình xác thực hoàn thành, với dữ liệu kết quả hoặc lỗi nếu có.
  */
-export function useOAuth(provider: keyof typeof configs): UseOAuthReturn {
+export function useSocialProviders(provider: keyof typeof configs): UseOAuthReturn {
     const { config, discovery } = configs[provider];
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
-    const [result, setResult] = useState<AuthSessionResult | null>(null);
-    const [error, setError] = useState<Error | null>(null);
+    const [result, setResult] = useState<OAuthResponse | undefined>(undefined);
 
-    const completeCallback = useRef<((data: AuthSessionResult | null, error: Error | null) => void) | null>(null);
+    const completeCallback = useRef<((param: OAuthResponse) => void) | null>(null);
 
-    const whenComplete = useCallback((cb: (data: AuthSessionResult | null, error: Error | null) => void) => {
+    const whenComplete = useCallback((cb: (param: OAuthResponse) => void) => {
         completeCallback.current = cb;
     }, []);
 
     useEffect(() => {
         let cancelled = false;
 
+        if (response?.type === 'error') {
+            setResult({ data: null, error: new Error(response.params.message ?? 'An error occurred during OAuth authentication') });
+        }
+
         if (response?.type === 'success') {
-            fetchToken(
+            fetchTokenFromProjectBackend(
                 provider,
                 response.params.code,
                 request?.codeVerifier,
                 data => {
                     if (!cancelled) {
-                        setResult(data);
+                        setResult(data ? { data, error: null } : { data: null, error: new Error('No data returned from OAuth provider') });
                     }
                 },
                 err => {
                     if (!cancelled) {
-                        setError(err);
+                        setResult({ data: null, error: err ?? new Error('An error occurred while fetching the token') });
                     }
                 },
             );
@@ -133,10 +153,18 @@ export function useOAuth(provider: keyof typeof configs): UseOAuthReturn {
     }, [response, request, provider]);
 
     useEffect(() => {
-        if (completeCallback.current && (result !== null || error !== null)) {
-            completeCallback.current(result, error);
+        if (completeCallback.current && result) {
+            completeCallback.current(result);
         }
-    }, [result, error]);
+    }, [result]);
 
-    return { request, response, result, error, promptAsync, whenComplete };
+    return { request, response, result: result?.data, error: result?.error, promptAsync, whenComplete };
+}
+
+export function useOAuth() {
+    return {
+        google: useSocialProviders('google'),
+        facebook: useSocialProviders('facebook'),
+        github: useSocialProviders('github'),
+    };
 }

@@ -1,3 +1,5 @@
+import type AntDesign from '@expo/vector-icons/AntDesign';
+
 export type Account = {
     id: number;
     email: string;
@@ -34,3 +36,12 @@ export type LoginJwt = {
 };
 
 export type OAuthPlatform = 'google' | 'facebook' | 'github';
+
+export type SocialMediaIcon = {
+    name: keyof typeof AntDesign.glyphMap;
+    color: { light: string; dark: string };
+    size: number;
+    platform: OAuthPlatform;
+};
+
+export type HandleOAuth = (data: LoginAppMfa | LoginJwt | Error) => Promise<void>;

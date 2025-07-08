@@ -1,17 +1,10 @@
-import { makeRedirectUri, useAuthRequest, type AuthRequest, type AuthRequestPromptOptions, type AuthSessionResult } from 'expo-auth-session';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { makeRedirectUri, useAuthRequest, type AuthSessionResult } from 'expo-auth-session';
+import { useCallback, useEffect } from 'react';
 
+import { useExchangeSocialCodeMutation } from '~/services';
 import { OAuthPlatform } from '~/types';
 import { BASE_URL } from '~utils/environment';
-
-type UseOAuthReturn = {
-    request: AuthRequest | null;
-    response: AuthSessionResult | null;
-    result: AuthSessionResult | null | undefined;
-    error: Error | null | undefined;
-    promptAsync: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult>;
-    whenComplete: (cb: (param: OAuthResponse) => void) => void;
-};
+import { getErrorMessage } from '~utils/error-handle';
 
 type OAuthProviderConfig = {
     config: {
@@ -23,8 +16,6 @@ type OAuthProviderConfig = {
         authorizationEndpoint: string;
     };
 };
-
-type OAuthResponse = { data: AuthSessionResult; error: null } | { data: null; error: Error };
 
 /**
  * Dự án này áp dụng kiến trúc BFF (Backend-for-Frontend).
@@ -70,101 +61,77 @@ const configs: Record<OAuthPlatform, OAuthProviderConfig> = {
     },
 };
 
-/**
- * Lấy token từ backend của dự án chứ không phải từ server của social login service.
- */
-async function fetchTokenFromProjectBackend(
-    provider: keyof typeof configs,
-    code: string,
-    codeVerifier: string | undefined,
-    setResult: (r: AuthSessionResult | null) => void,
-    setError: (e: Error | null) => void,
-) {
-    if (!code || !codeVerifier) {
-        return;
-    }
-    try {
-        const loginEndpoint = `${BASE_URL}/auth/${provider}/login`;
-        const res = await fetch(loginEndpoint, {
-            method: 'POST',
-            body: JSON.stringify({ code, codeVerifier }),
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        if (!res.ok) {
-            setError(new Error('Failed to fetch token'));
-        }
-        const data: AuthSessionResult = await res.json();
-
-        setResult(data);
-    } catch (err: any) {
-        setResult(null);
-        setError(err);
-    }
-}
-
-/**
- * request: AuthRequest | null - Yêu cầu xác thực OAuth, có thể là null nếu chưa khởi tạo.
- * response: AuthSessionResult | null - Kết quả của yêu cầu xác thực, có thể là null nếu chưa có phản hồi.
- * result: AuthSessionResult | null - Kết quả cuối cùng của quá trình xác thực, có thể là null nếu chưa hoàn thành.
- * error: Error | null - Lỗi xảy ra trong quá trình xác thực, có thể là null nếu không có lỗi.
- * promptAsync: (options?: AuthRequestPromptOptions) => Promise<AuthSessionResult> - Hàm để khởi tạo quá trình xác thực OAuth, có thể nhận các tùy chọn bổ sung.
- * whenComplete: (cb: (data: AuthSessionResult | null, error: Error | null) => void) => void - Hàm để đăng ký callback sẽ được gọi khi quá trình xác thực hoàn thành, với dữ liệu kết quả hoặc lỗi nếu có.
- */
-export function useSocialProviders(provider: keyof typeof configs): UseOAuthReturn {
+export function useOAuth(provider: keyof typeof configs) {
     const { config, discovery } = configs[provider];
-    const [request, response, promptAsync] = useAuthRequest(config, discovery);
-    const [result, setResult] = useState<OAuthResponse | undefined>(undefined);
+    const [request, _response, promptAsync] = useAuthRequest(config, discovery);
 
-    const completeCallback = useRef<((param: OAuthResponse) => void) | null>(null);
+    const [fetchTokenFromProjectBackend, { isLoading, reset }] = useExchangeSocialCodeMutation();
 
-    const whenComplete = useCallback((cb: (param: OAuthResponse) => void) => {
-        completeCallback.current = cb;
-    }, []);
-
+    /**
+     * Khi provider đổi, reset mutation state
+     */
     useEffect(() => {
-        let cancelled = false;
+        reset();
+    }, [provider, reset]);
 
-        if (response?.type === 'error') {
-            setResult({ data: null, error: new Error(response.params.message ?? 'An error occurred during OAuth authentication') });
-        }
+    const oauthLogin = useCallback(async () => {
+        try {
+            const oauthResponse: Prettify<AuthSessionResult> = await promptAsync();
 
-        if (response?.type === 'success') {
-            fetchTokenFromProjectBackend(
-                provider,
-                response.params.code,
-                request?.codeVerifier,
-                data => {
-                    if (!cancelled) {
-                        setResult(data ? { data, error: null } : { data: null, error: new Error('No data returned from OAuth provider') });
+            /**
+             * Chứa type phản ánh trạng thái xác thực OAuth:
+             * - 'success': Xác thực thành công, có thể lấy mã thông báo.
+             * - 'error': Khi có lỗi từ provider hoặc backend.
+             * - 'cancel': Khi người dùng tắt browser hoặc webview, thường là bấm nút cancel.
+             * - 'dismiss': Khi lập trình viên dùng AuthSession.dismiss().
+             *
+             * Locked và opened là các trạng thái không thường gặp, không được ghi rõ trong docs nhưng theo tìm hiểu từ các issue thì:
+             * - 'locked': Khi mở phiên xác thực thứ 2 trong khi phiên trước vẫn đang mở, (mở 2 lần startAsync() hoặc promptAsync()).
+             * - 'opened': Chỉ xảy ra trên web khi mở popup xác thực nhưng chưa có kết quả, thường dùng để loading trang chính.
+             */
+            const type = oauthResponse.type;
+
+            switch (type) {
+                case 'success': {
+                    if (!request?.codeVerifier) {
+                        throw new Error('Code verifier is missing. Ensure that the request was created with a code verifier.');
                     }
-                },
-                err => {
-                    if (!cancelled) {
-                        setResult({ data: null, error: err ?? new Error('An error occurred while fetching the token') });
+                    const response = await fetchTokenFromProjectBackend({
+                        provider,
+                        code: oauthResponse.params.code,
+                        codeVerifier: request.codeVerifier,
+                    });
+
+                    if (response.error) {
+                        const message = getErrorMessage(response.error);
+
+                        throw new Error(message);
                     }
-                },
-            );
+
+                    return response.data;
+                }
+                case 'error': {
+                    const message = oauthResponse.params?.message || oauthResponse.params?.error || 'An error occurred during OAuth authentication';
+
+                    throw new Error(message);
+                }
+                case 'dismiss':
+                    throw new Error('OAuth authentication was dismissed');
+                case 'cancel':
+                    throw new Error('OAuth authentication was cancelled');
+                case 'locked':
+                case 'opened':
+                    throw new Error('An unknown error occurred during OAuth authentication');
+                default:
+                    throw new Error('Unhandled OAuth response type');
+            }
+        } catch (error) {
+            return error instanceof Error ? error : new Error(typeof error === 'string' ? error : JSON.stringify(error));
         }
+    }, [fetchTokenFromProjectBackend, promptAsync, provider, request?.codeVerifier]);
 
-        return () => {
-            cancelled = true;
-        };
-    }, [response, request, provider]);
-
-    useEffect(() => {
-        if (completeCallback.current && result) {
-            completeCallback.current(result);
-        }
-    }, [result]);
-
-    return { request, response, result: result?.data, error: result?.error, promptAsync, whenComplete };
-}
-
-export function useOAuth() {
     return {
-        google: useSocialProviders('google'),
-        facebook: useSocialProviders('facebook'),
-        github: useSocialProviders('github'),
+        isLoading,
+        oauthLogin,
     };
 }

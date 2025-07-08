@@ -30,8 +30,21 @@ export const registerApi = API.injectEndpoints({
                 return response;
             },
         }),
+        exchangeSocialCode: build.mutation<LoginJwt | LoginAppMfa, { provider: string; code: string; codeVerifier: string }>({
+            query: ({ provider, code, codeVerifier }) => ({
+                url: `auth/${provider}/login`,
+                method: 'POST',
+                body: { code, codeVerifier },
+            }),
+            transformResponse(response: LoginJwt | LoginAppMfa) {
+                SecureStore.setItemAsync('accessToken', response.authToken.accessToken);
+                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken);
+
+                return response;
+            },
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation } = registerApi;
+export const { useRegisterMutation, useLoginMutation, useExchangeSocialCodeMutation } = registerApi;

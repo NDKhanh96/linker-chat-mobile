@@ -1,15 +1,12 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'expo-router';
 import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity, useColorScheme } from 'react-native';
 import type { z } from 'zod';
 
-import { useOAuth } from '~/hooks';
 import { useLoginMutation } from '~/services';
-import type { OAuthPlatform } from '~/types';
-import { ButtonGradientLoading } from '~components/button';
+import type { HandleOAuth, LoginAppMfa, LoginJwt, SocialMediaIcon } from '~/types';
+import { ButtonGradientLoading, OAuthButton } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
@@ -18,13 +15,6 @@ import { Image } from '~components/ui/image';
 import { loginSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
-type SocialMediaIcon = {
-    name: keyof typeof AntDesign.glyphMap;
-    color: { light: string; dark: string };
-    size: number;
-    platform: OAuthPlatform;
-};
-
 const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
     { name: 'google', color: { light: '#EF4444', dark: '#EF4444' }, size: 24, platform: 'google' },
     { name: 'facebook-square', color: { light: '#2463EB', dark: '#2463EB' }, size: 24, platform: 'facebook' },
@@ -32,42 +22,35 @@ const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
 ];
 
 export default function Login(): React.JSX.Element {
-    const colorScheme = useColorScheme();
     const errorToast = useErrorToast();
     const [login] = useLoginMutation();
-    const oAuth = useOAuth();
     const {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<z.infer<typeof loginSchema>>({ resolver: zodResolver(loginSchema) });
 
-    const pressCredentialLogin = async (data: z.infer<typeof loginSchema>) => {
+    const handleCredentialLogin = async (data: z.infer<typeof loginSchema>) => {
         const res = await login(data);
 
         if (res.data) {
-            handleLogin(res.data);
+            handleLoginSuccess(res.data);
         }
     };
 
-    const pressSocialMediaLogin = async (platform: keyof typeof oAuth) => {
-        const { promptAsync, whenComplete } = oAuth[platform];
+    const handleOAuth: HandleOAuth = async res => {
+        if (res instanceof Error) {
+            errorToast(res.message);
 
-        await promptAsync();
-        whenComplete(({ data, error }) => {
-            if (error) {
-                errorToast(error?.message);
+            return;
+        }
 
-                return;
-            }
-
-            handleLogin(data);
-        });
+        handleLoginSuccess(res);
     };
 
-    const handleLogin = (result: unknown) => {
+    const handleLoginSuccess = (data: LoginJwt | LoginAppMfa) => {
         // TODO: Handle successful login, e.g., navigate to the main app screen
-        console.log('Login result:', result);
+        console.log('Login result:', data);
     };
 
     return (
@@ -148,7 +131,7 @@ export default function Login(): React.JSX.Element {
                     isLoading={isSubmitting}
                     loadingText={t('auth.logging_in')}
                     buttonProps={{
-                        onPress: handleSubmit(pressCredentialLogin),
+                        onPress: handleSubmit(handleCredentialLogin),
                         disabled: isSubmitting,
                     }}
                     linearGradientProps={{
@@ -170,13 +153,7 @@ export default function Login(): React.JSX.Element {
 
                 <View className="flex-row justify-center gap-x-5">
                     {SOCIAL_MEDIA_ICONS.map(({ color, name, platform, size }, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            className="border border-gray-200 flex-1 rounded-lg items-center justify-center h-12"
-                            onPress={() => pressSocialMediaLogin(platform)}
-                        >
-                            <AntDesign name={name} size={size} color={colorScheme === 'dark' ? color.dark : color.light} />
-                        </TouchableOpacity>
+                        <OAuthButton color={color} name={name} platform={platform} size={size} key={index} handleOAuth={handleOAuth} />
                     ))}
                 </View>
 

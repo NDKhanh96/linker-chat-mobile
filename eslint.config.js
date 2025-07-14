@@ -4,10 +4,17 @@ const expoConfig = require('eslint-config-expo/flat');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 module.exports = defineConfig([
-    expoConfig,
+    ...expoConfig,
     eslintPluginPrettierRecommended,
     {
         ignores: ['dist/*', '/.expo', 'node_modules/*'],
+        files: ['**/*.ts', '**/*.tsx'],
+        languageOptions: {
+            parserOptions: {
+                project: true,
+                tsconfigRootDir: process.cwd(),
+            },
+        },
         rules: {
             'prettier/prettier': 'error',
             'no-console': ['warn', { allow: ['warn', 'error', 'clear'] }],
@@ -20,13 +27,6 @@ module.exports = defineConfig([
             'no-obj-calls': 'error',
             'no-sparse-arrays': 'error',
             'no-unreachable': 'error',
-            '@typescript-eslint/no-unused-vars': [
-                'error',
-                {
-                    argsIgnorePattern: '^_',
-                    varsIgnorePattern: '^_',
-                },
-            ],
             'valid-typeof': 'warn',
             curly: 'error',
             eqeqeq: 'warn',
@@ -69,6 +69,19 @@ module.exports = defineConfig([
                     blankLine: 'any',
                     prev: 'directive',
                     next: 'directive',
+                },
+            ],
+            '@typescript-eslint/no-floating-promises': 'warn',
+            '@typescript-eslint/no-unsafe-assignment': 'warn',
+            '@typescript-eslint/no-unsafe-member-access': 'warn',
+            '@typescript-eslint/no-unsafe-call': 'warn',
+            '@typescript-eslint/no-unsafe-argument': 'warn',
+            '@typescript-eslint/no-explicit-any': 'error',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
                 },
             ],
         },

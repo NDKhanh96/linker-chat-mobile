@@ -14,7 +14,7 @@ export const authSlice = createSlice({
     /**
      * Dùng để dispatch action bất đồng bộ như call API
      */
-    extraReducers(builder: ActionReducerMapBuilder<InitialState>): void {},
+    extraReducers(_builder: ActionReducerMapBuilder<InitialState>): void {},
 });
 
 // eslint-disable-next-line no-empty-pattern

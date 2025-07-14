@@ -11,7 +11,6 @@ import { InputBase, InputPassword } from '~components/input';
 import { AvatarPicker } from '~components/picker';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
 import { useErrorToast } from '~components/toast';
-import { getErrorMessage } from '~utils/error-handle';
 import { registerSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
@@ -30,11 +29,7 @@ export default function Register(): React.JSX.Element {
         const res = await register(data);
 
         if (res.error) {
-            const message = getErrorMessage(res.error);
-
-            errorToast(message);
-
-            return;
+            return errorToast(res.error.message);
         }
 
         // TODO: navigate to home

@@ -1,8 +1,9 @@
 import * as SecureStore from 'expo-secure-store';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 import type { Account, LoginAppMfa, LoginJwt } from '~/types';
 import { API } from '~utils/configs';
+import { eventEmitter, EVENTS } from '~utils/event-emitter';
 import type { loginSchema, registerSchema } from '~utils/form-schema';
 
 export const registerApi = API.injectEndpoints({
@@ -24,8 +25,13 @@ export const registerApi = API.injectEndpoints({
                 body,
             }),
             transformResponse(response: LoginJwt | LoginAppMfa) {
-                SecureStore.setItemAsync('accessToken', response.authToken.accessToken);
-                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken);
+                SecureStore.setItemAsync('accessToken', response.authToken.accessToken).catch((error: Error) => {
+                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
+                });
+
+                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken).catch((error: Error) => {
+                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
+                });
 
                 return response;
             },
@@ -37,8 +43,13 @@ export const registerApi = API.injectEndpoints({
                 body: { code, codeVerifier },
             }),
             transformResponse(response: LoginJwt | LoginAppMfa) {
-                SecureStore.setItemAsync('accessToken', response.authToken.accessToken);
-                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken);
+                SecureStore.setItemAsync('accessToken', response.authToken.accessToken).catch((error: Error) => {
+                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
+                });
+
+                SecureStore.setItemAsync('refreshToken', response.authToken.refreshToken).catch((error: Error) => {
+                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
+                });
 
                 return response;
             },

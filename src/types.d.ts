@@ -44,4 +44,4 @@ export type SocialMediaIcon = {
     platform: OAuthPlatform;
 };
 
-export type HandleOAuth = (data: LoginAppMfa | LoginJwt | Error) => Promise<void>;
+export type HandleOAuth = (data: LoginAppMfa | LoginJwt | Error) => void;

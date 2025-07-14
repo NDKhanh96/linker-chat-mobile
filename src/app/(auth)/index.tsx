@@ -33,16 +33,15 @@ export default function Login(): React.JSX.Element {
     const handleCredentialLogin = async (data: z.infer<typeof loginSchema>) => {
         const res = await login(data);
 
-        if (res.data) {
-            handleLoginSuccess(res.data);
+        if (res.error) {
+            return errorToast(res.error?.message);
         }
+        handleLoginSuccess(res.data);
     };
 
-    const handleOAuth: HandleOAuth = async res => {
+    const handleOAuth: HandleOAuth = res => {
         if (res instanceof Error) {
-            errorToast(res.message);
-
-            return;
+            return errorToast(res.message);
         }
 
         handleLoginSuccess(res);

@@ -11,7 +11,9 @@ import 'react-native-reanimated';
 import { Provider } from 'react-redux';
 
 import { store } from '~/redux/store';
+import SpaceMono from '~assets/fonts/SpaceMono-Regular.ttf';
 import { SafeAreaView } from '~components/themed';
+import { ToastProvider } from '~components/toast';
 import { GluestackUIProvider } from '~components/ui/gluestack-ui-provider';
 
 export {
@@ -31,11 +33,11 @@ export const unstable_settings = {
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [loaded, error] = useFonts({
-        SpaceMono: require('~assets/fonts/SpaceMono-Regular.ttf'),
+        SpaceMono,
         ...FontAwesome.font,
     });
 
@@ -48,7 +50,7 @@ export default function RootLayout() {
 
     useEffect(() => {
         if (loaded) {
-            SplashScreen.hideAsync();
+            void SplashScreen.hideAsync();
         }
     }, [loaded]);
 
@@ -73,9 +75,11 @@ function RootLayoutNav() {
         <GluestackUIProvider mode="system">
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <SafeAreaView className="flex-1">
-                    <Stack initialRouteName="(auth)">
-                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    </Stack>
+                    <ToastProvider>
+                        <Stack initialRouteName="(auth)">
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        </Stack>
+                    </ToastProvider>
                 </SafeAreaView>
             </ThemeProvider>
         </GluestackUIProvider>

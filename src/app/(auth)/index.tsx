@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
 import { useLoginMutation } from '~/services';
-import type { HandleOAuth, LoginAppMfa, LoginJwt, SocialMediaIcon } from '~/types';
+import type { HandleOAuth, LoginResponse, SocialMediaIcon } from '~/types';
 import { ButtonGradientLoading, OAuthButton } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
@@ -39,7 +39,7 @@ export default function Login(): React.JSX.Element {
         handleLoginSuccess(res.data);
     };
 
-    const handleOAuth: HandleOAuth = res => {
+    const handleOAuth: HandleOAuth = (res: Error | LoginResponse) => {
         if (res instanceof Error) {
             return errorToast(res.message);
         }
@@ -47,7 +47,7 @@ export default function Login(): React.JSX.Element {
         handleLoginSuccess(res);
     };
 
-    const handleLoginSuccess = (data: LoginJwt | LoginAppMfa) => {
+    const handleLoginSuccess = (data: LoginResponse) => {
         // TODO: Handle successful login, e.g., navigate to the main app screen
         console.log('Login result:', data);
     };

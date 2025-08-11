@@ -13,24 +13,16 @@ export type Account = {
     };
 };
 
-export type LoginAppMfa = {
-    authToken: {
-        accessToken: string;
-        refreshToken: string;
-    };
-    email: string;
-    enableAppMfa: boolean;
-    isCredential: boolean;
-    id: number;
+export type AuthToken = {
+    accessToken: string;
+    refreshToken: string;
 };
 
-export type LoginJwt = {
-    authToken: {
-        accessToken: string;
-        refreshToken: string;
-    };
+export type LoginResponse = {
+    authToken: AuthToken | undefined;
     email: string;
-    enableAppMfa: boolean;
+    enableTotp: boolean;
+    enableEmailOtp: boolean;
     isCredential: boolean;
     id: number;
 };

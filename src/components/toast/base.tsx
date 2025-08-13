@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { View } from '~components/themed';
-import { CloseIcon, HelpCircleIcon, Icon } from '~components/ui/icon';
+import { CloseIcon, Icon } from '~components/ui/icon';
 import { Toast, ToastDescription, ToastTitle, useToast } from '~components/ui/toast';
 
 export function useErrorToast() {
@@ -15,7 +15,7 @@ export function useErrorToast() {
             toast.show({
                 id: newId,
                 placement: 'top',
-                duration: 30000,
+                duration: 3000,
                 render: ({ id }) => (
                     <Toast
                         action="error"
@@ -24,7 +24,6 @@ export function useErrorToast() {
                         className="p-4 gap-6 border-error-500 w-11/12 shadow-hard-5 flex-row justify-between self-center"
                     >
                         <View className="flex-row gap-3">
-                            <Icon as={HelpCircleIcon} className="stroke-error-500 mt-0.5" />
                             <View className="flex-col gap-1">
                                 <ToastTitle size="lg" className="font-bold text-error-500">
                                     Error!

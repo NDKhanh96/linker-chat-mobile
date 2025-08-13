@@ -1,9 +1,8 @@
-import * as SecureStore from 'expo-secure-store';
 import { z } from 'zod';
 
 import type { Account, LoginResponse } from '~/types';
+import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
-import { eventEmitter, EVENTS } from '~utils/event-emitter';
 import type { loginSchema, registerSchema } from '~utils/form-schema';
 
 export const registerApi = API.injectEndpoints({
@@ -24,14 +23,8 @@ export const registerApi = API.injectEndpoints({
                 method: 'POST',
                 body,
             }),
-            transformResponse(response: LoginResponse) {
-                SecureStore.setItemAsync('accessToken', response.authToken?.accessToken ?? '').catch((error: Error) => {
-                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
-                });
-
-                SecureStore.setItemAsync('refreshToken', response.authToken?.refreshToken ?? '').catch((error: Error) => {
-                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
-                });
+            async transformResponse(response: LoginResponse) {
+                await storeTokens(response.authToken);
 
                 return response;
             },
@@ -42,14 +35,8 @@ export const registerApi = API.injectEndpoints({
                 method: 'POST',
                 body: { code, codeVerifier },
             }),
-            transformResponse(response: LoginResponse) {
-                SecureStore.setItemAsync('accessToken', response.authToken?.accessToken ?? '').catch((error: Error) => {
-                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
-                });
-
-                SecureStore.setItemAsync('refreshToken', response.authToken?.refreshToken ?? '').catch((error: Error) => {
-                    eventEmitter.emit(EVENTS.SHOW_ERROR_TOAST, error.message);
-                });
+            async transformResponse(response: LoginResponse) {
+                await storeTokens(response.authToken);
 
                 return response;
             },

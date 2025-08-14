@@ -1,11 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import { authSlice } from '~/redux/slices';
+import { authSlice, toastSlice } from '~/redux/slices';
 import { API } from '~utils/configs';
 
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
+    toast: toastSlice.reducer,
     [API.reducerPath]: API.reducer,
 });
 

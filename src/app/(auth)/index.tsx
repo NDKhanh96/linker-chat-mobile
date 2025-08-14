@@ -3,14 +3,15 @@ import { Link } from 'expo-router';
 import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
+import { showToast } from '~/redux/slices';
 
+import { useAppDispatch } from '~/redux/store';
 import { useLoginMutation } from '~/services';
 import type { HandleOAuth, LoginResponse, SocialMediaIcon } from '~/types';
 import { ButtonGradientLoading, OAuthButton } from '~components/button';
 import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
-import { useErrorToast } from '~components/toast';
 import { Image } from '~components/ui/image';
 import { loginSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
@@ -22,7 +23,7 @@ const SOCIAL_MEDIA_ICONS: SocialMediaIcon[] = [
 ];
 
 export default function Login(): React.JSX.Element {
-    const errorToast = useErrorToast();
+    const dispatch = useAppDispatch();
     const [login] = useLoginMutation();
     const {
         control,
@@ -34,14 +35,18 @@ export default function Login(): React.JSX.Element {
         const res = await login(data);
 
         if (res.error) {
-            return errorToast(res.error?.message);
+            dispatch(showToast({ title: 'Error', description: res.error?.message, type: 'error' }));
+
+            return;
         }
         handleLoginSuccess(res.data);
     };
 
     const handleOAuth: HandleOAuth = (res: Error | LoginResponse) => {
         if (res instanceof Error) {
-            return errorToast(res.message);
+            dispatch(showToast({ title: 'Error', description: res.message, type: 'error' }));
+
+            return;
         }
 
         handleLoginSuccess(res);

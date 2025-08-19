@@ -4,7 +4,6 @@ import { useCallback, useEffect } from 'react';
 import { useExchangeSocialCodeMutation } from '~/services';
 import { OAuthPlatform } from '~/types';
 import { BASE_URL } from '~utils/environment';
-import { getErrorMessage } from '~utils/error-handle';
 
 type OAuthProviderConfig = {
     config: {
@@ -102,10 +101,11 @@ export function useOAuth(provider: keyof typeof configs) {
                         codeVerifier: request.codeVerifier,
                     });
 
+                    /**
+                     * Đã dc handler lỗi bên trong useExchangeSocialCodeMutation,
+                     */
                     if (response.error) {
-                        const message = getErrorMessage(response.error);
-
-                        throw new Error(message);
+                        return;
                     }
 
                     return response.data;

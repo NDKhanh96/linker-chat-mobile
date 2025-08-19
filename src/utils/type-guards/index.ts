@@ -1,6 +1,14 @@
 import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
+type BaseQueryHandledError = {
+    error: {
+        status: FetchBaseQueryError['status'];
+        data: FetchBaseQueryError['data'];
+        message: string;
+    };
+};
+
 function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
     if (typeof error !== 'object' || error === null) {
         return false;
@@ -43,4 +51,16 @@ export function isTimeoutError(error: unknown): error is Extract<FetchBaseQueryE
 
 export function isCustomError(error: unknown): error is Extract<FetchBaseQueryError, { status: 'CUSTOM_ERROR' }> {
     return isFetchBaseQueryError(error) && error.status === 'CUSTOM_ERROR';
+}
+
+export function isBaseQueryHandledError(error: unknown): error is BaseQueryHandledError {
+    return (
+        typeof error === 'object' &&
+        error !== null &&
+        'error' in error &&
+        typeof error.error === 'object' &&
+        error.error !== null &&
+        'message' in error.error &&
+        typeof error.error.message === 'string'
+    );
 }

@@ -1,17 +1,8 @@
-import type { SerializedError } from '@reduxjs/toolkit';
-import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs } from '@reduxjs/toolkit/query/react';
 import * as SecureStore from 'expo-secure-store';
 
 import { BASE_URL } from '~utils/environment';
-import { getErrorMessage } from '~utils/error-handle';
-import { isSerializedError } from '~utils/type-guards';
-
-type StandardError = {
-    message: string;
-    code: number | string;
-    data: unknown;
-    originalError: FetchBaseQueryError | SerializedError;
-};
+import { getBaseQueryErrorMessage } from '~utils/error-handle';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL,
@@ -26,27 +17,7 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
-const transformToStandardError: (error: FetchBaseQueryError | SerializedError) => StandardError = error => {
-    if (isSerializedError(error)) {
-        return {
-            message: error.message || 'Serialized error',
-            code: error.code ?? 'UNKNOWN_SERIALIZED_ERROR',
-            data: error.stack,
-            originalError: error,
-        };
-    }
-
-    const message = getErrorMessage(error);
-
-    return {
-        message,
-        code: error.status,
-        data: error.data,
-        originalError: error,
-    };
-};
-
-const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, StandardError> = async (args, api, extraOptions) => {
+const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, unknown> = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
 
     if (result.error?.status === 401) {
@@ -59,7 +30,19 @@ const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, StandardError> 
         console.warn('401 detected, redirect to login!');
     }
 
-    return result.error ? { ...result, error: transformToStandardError(result.error) } : { ...result, error: undefined };
+    if (result.error) {
+        const message = getBaseQueryErrorMessage(result.error.data);
+
+        return {
+            error: {
+                status: result.error.status,
+                data: result.error.data,
+                message: message,
+            },
+        };
+    }
+
+    return result;
 };
 
 export const API = createApi({

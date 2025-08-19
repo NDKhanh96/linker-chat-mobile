@@ -1,7 +1,7 @@
-import { isCustomError, isFetchError, isHttpError, isParsingError, isSerializedError, isTimeoutError } from '~utils/type-guards';
+import { isBaseQueryHandledError, isCustomError, isFetchError, isHttpError, isParsingError, isSerializedError, isTimeoutError } from '~utils/type-guards';
 import { errorHttpSchema } from '~utils/validate-schema';
 
-export function getErrorMessage(error: unknown): string {
+export function getBaseQueryErrorMessage(error: unknown): string {
     let message: string = 'RTK-Query Error';
 
     if (isSerializedError(error)) {
@@ -18,6 +18,18 @@ export function getErrorMessage(error: unknown): string {
         message = error.error ?? 'Timeout Error';
     } else if (isCustomError(error)) {
         message = error.error ?? 'Custom Error';
+    }
+
+    return message;
+}
+
+export function getMutationErrorMessage(error: unknown): string {
+    let message: string = 'RTK-Query Error';
+
+    if (error instanceof Error) {
+        message = error.message;
+    } else if (isBaseQueryHandledError(error)) {
+        message = error.error.message;
     }
 
     return message;

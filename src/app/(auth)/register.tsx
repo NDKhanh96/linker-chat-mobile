@@ -4,8 +4,6 @@ import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform } from 'react-native';
 import type { z } from 'zod';
-import { showToast } from '~/redux/slices';
-import { useAppDispatch } from '~/redux/store';
 
 import { useRegisterMutation } from '~/services';
 import { ButtonGradientLoading } from '~components/button';
@@ -16,8 +14,6 @@ import { registerSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
 export default function Register(): React.JSX.Element {
-    const dispatch = useAppDispatch();
-
     const [register] = useRegisterMutation();
 
     const {
@@ -29,13 +25,9 @@ export default function Register(): React.JSX.Element {
     const handleRegister = async (data: z.infer<typeof registerSchema>) => {
         const res = await register(data);
 
-        if (res.error) {
-            dispatch(showToast({ title: 'Error', description: res.error?.message, type: 'error' }));
-
-            return;
+        if (res.data) {
+            // TODO: navigate to home
         }
-
-        // TODO: navigate to home
     };
 
     return (

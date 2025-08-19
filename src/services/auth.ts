@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
+import { showToast } from '~/redux/slices';
 import type { Account, LoginResponse } from '~/types';
 import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
+import { getMutationErrorMessage } from '~utils/error-handle';
 import type { loginSchema, registerSchema } from '~utils/form-schema';
 
 export const registerApi = API.injectEndpoints({
@@ -24,9 +26,20 @@ export const registerApi = API.injectEndpoints({
                 body,
             }),
             async transformResponse(response: LoginResponse) {
-                await storeTokens(response.authToken);
-
                 return response;
+            },
+            onQueryStarted: async (arg, mutationLifeCycleApi) => {
+                const { queryFulfilled, dispatch } = mutationLifeCycleApi;
+
+                try {
+                    const result = await queryFulfilled;
+
+                    await storeTokens(result.data.authToken);
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
             },
         }),
         exchangeSocialCode: build.mutation<LoginResponse, { provider: string; code: string; codeVerifier: string }>({
@@ -36,9 +49,18 @@ export const registerApi = API.injectEndpoints({
                 body: { code, codeVerifier },
             }),
             async transformResponse(response: LoginResponse) {
-                await storeTokens(response.authToken);
-
                 return response;
+            },
+            onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+                try {
+                    const result = await queryFulfilled;
+
+                    await storeTokens(result.data.authToken);
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
             },
         }),
     }),

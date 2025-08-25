@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs } from '@reduxjs/toolkit/query/react';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 
 import { BASE_URL } from '~utils/environment';
@@ -21,13 +22,8 @@ const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, unknown> = asyn
     const result = await baseQuery(args, api, extraOptions);
 
     if (result.error?.status === 401) {
-        // Thực hiện điều hướng ở đây, ví dụ:
-        // navigationRef.navigate('Login');
-        // hoặc dispatch logout, clear token, v.v.
-        // Ví dụ:
-        // api.dispatch(logoutAction());
-        // hoặc gọi hàm điều hướng toàn cục
-        console.warn('401 detected, redirect to login!');
+        router.navigate('/(auth)');
+        void Promise.allSettled([SecureStore.deleteItemAsync('accessToken'), SecureStore.deleteItemAsync('refreshToken')]);
     }
 
     if (result.error) {

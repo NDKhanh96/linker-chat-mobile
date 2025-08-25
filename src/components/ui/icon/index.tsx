@@ -76,6 +76,7 @@ const AddIcon = createIcon({
     path: (
         <>
             <Path d="M12 5V19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M5 12H19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -95,7 +96,9 @@ const AlertCircleIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M12 8V12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 16H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -110,6 +113,7 @@ const ArrowUpIcon = createIcon({
     path: (
         <>
             <Path d="M12 19V5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M5 12L12 5L19 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -122,6 +126,7 @@ const ArrowDownIcon = createIcon({
     path: (
         <>
             <Path d="M12 5V19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M19 12L12 19L5 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -134,6 +139,7 @@ const ArrowRightIcon = createIcon({
     path: (
         <>
             <Path d="M5 12H19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 5L19 12L12 19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -145,6 +151,7 @@ const ArrowLeftIcon = createIcon({
     path: (
         <>
             <Path d="M19 12H5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 19L5 12L12 5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -169,6 +176,7 @@ const AtSignIcon = createIcon({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                 />
+
                 <Path
                     d="M16 7.99999V13C16 13.7956 16.3161 14.5587 16.8787 15.1213C17.4413 15.6839 18.2044 16 19 16C19.7957 16 20.5587 15.6839 21.1213 15.1213C21.6839 14.5587 22 13.7956 22 13V12C21.9999 9.74302 21.2362 7.55247 19.8333 5.78452C18.4303 4.01658 16.4706 2.77521 14.2726 2.26229C12.0747 1.74936 9.76794 1.99503 7.72736 2.95936C5.68677 3.92368 4.03241 5.54995 3.03327 7.57371C2.03413 9.59748 1.74898 11.8997 2.22418 14.1061C2.69938 16.3125 3.90699 18.2932 5.65064 19.7263C7.39429 21.1593 9.57144 21.9603 11.8281 21.9991C14.0847 22.0379 16.2881 21.3122 18.08 19.94"
                     strokeWidth="2"
@@ -195,6 +203,7 @@ const BellIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M13.73 21C13.5542 21.3031 13.3018 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21"
                 strokeWidth="2"
@@ -220,14 +229,23 @@ const CalendarDaysIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M16 2V6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M8 2V6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M3 10H21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M8 14H8.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 14H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M16 14H16.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M8 18H8.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 18H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M16 18H16.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -258,6 +276,7 @@ const CheckCircleIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M9 12L11 14L15 10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -317,6 +336,7 @@ const ChevronsLeftIcon = createIcon({
     path: (
         <>
             <Path d="M11 17L6 12L11 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M18 17L13 12L18 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -329,6 +349,7 @@ const ChevronsRightIcon = createIcon({
     path: (
         <>
             <Path d="M13 17L18 12L13 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M6 17L11 12L6 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -341,6 +362,7 @@ const ChevronsUpDownIcon = createIcon({
     path: (
         <>
             <Path d="M7 15L12 20L17 15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M7 9L12 4L17 9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -386,6 +408,7 @@ const ClockIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M12 6V12L16 14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -401,6 +424,7 @@ const CloseIcon = createIcon({
     path: (
         <>
             <Path d="M18 6L6 18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M6 6L18 18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -417,7 +441,9 @@ const CloseCircleIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M15 9L9 15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M9 9L15 15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -439,6 +465,7 @@ const CopyIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5"
                 strokeWidth="2"
@@ -464,7 +491,9 @@ const DownloadIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M7 10L12 15L17 10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 15V3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -484,6 +513,7 @@ const EditIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M18.5 2.50001C18.8978 2.10219 19.4374 1.87869 20 1.87869C20.5626 1.87869 21.1022 2.10219 21.5 2.50001C21.8978 2.89784 22.1213 3.4374 22.1213 4.00001C22.1213 4.56262 21.8978 5.10219 21.5 5.50001L12 15L8 16L9 12L18.5 2.50001Z"
                 strokeWidth="2"
@@ -503,6 +533,7 @@ const EyeIcon = createIcon({
     path: (
         <>
             <Path d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
                 strokeWidth="2"
@@ -526,18 +557,21 @@ const EyeOffIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M10.73 5.08C11.1513 5.02751 11.5754 5.00079 12 5C19 5 22 12 22 12C21.5529 12.9571 20.9922 13.8569 20.33 14.68"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M6.61 6.61C4.62125 7.96462 3.02987 9.82526 2 12C2 12 5 19 12 19C13.9159 19.0051 15.7908 18.4451 17.39 17.39"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M2 2L22 22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -575,7 +609,9 @@ const GlobeIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M2 12H22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2V2Z"
                 strokeWidth="2"
@@ -600,30 +636,35 @@ const GripVerticalIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M9 6C9.55228 6 10 5.55228 10 5C10 4.44772 9.55228 4 9 4C8.44772 4 8 4.44772 8 5C8 5.55228 8.44772 6 9 6Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M9 20C9.55228 20 10 19.5523 10 19C10 18.4477 9.55228 18 9 18C8.44772 18 8 18.4477 8 19C8 19.5523 8.44772 20 9 20Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M15 13C15.5523 13 16 12.5523 16 12C16 11.4477 15.5523 11 15 11C14.4477 11 14 11.4477 14 12C14 12.5523 14.4477 13 15 13Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M15 6C15.5523 6 16 5.55228 16 5C16 4.44772 15.5523 4 15 4C14.4477 4 14 4.44772 14 5C14 5.55228 14.4477 6 15 6Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M15 20C15.5523 20 16 19.5523 16 19C16 18.4477 15.5523 18 15 18C14.4477 18 14 18.4477 14 19C14 19.5523 14.4477 20 15 20Z"
                 strokeWidth="2"
@@ -648,12 +689,14 @@ const HelpCircleIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M9.09 9.00001C9.3251 8.33167 9.78915 7.76811 10.4 7.40914C11.0108 7.05016 11.7289 6.91894 12.4272 7.03872C13.1255 7.15849 13.7588 7.52153 14.2151 8.06353C14.6713 8.60554 14.9211 9.29153 14.92 10C14.92 12 11.92 13 11.92 13"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M12 17H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -673,7 +716,9 @@ const InfoIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M12 16V12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 8H12.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -693,6 +738,7 @@ const LinkIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M14 11C13.5705 10.4259 13.0226 9.95083 12.3935 9.60707C11.7643 9.26331 11.0685 9.05889 10.3534 9.00768C9.63821 8.95646 8.92041 9.05964 8.24866 9.31023C7.5769 9.56082 6.96689 9.95294 6.46 10.46L3.46 13.46C2.54921 14.403 2.04524 15.666 2.05663 16.977C2.06802 18.288 2.59387 19.5421 3.52091 20.4691C4.44795 21.3961 5.70201 21.922 7.013 21.9334C8.32398 21.9448 9.58699 21.4408 10.53 20.53L12.24 18.82"
                 strokeWidth="2"
@@ -716,7 +762,9 @@ const ExternalLinkIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M15 3H21V9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M10 14L21 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -754,6 +802,7 @@ const LockIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11"
                 strokeWidth="2"
@@ -778,6 +827,7 @@ const MailIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M22 7L13.03 12.7C12.7213 12.8934 12.3643 12.996 12 12.996C11.6357 12.996 11.2787 12.8934 10.97 12.7L2 7"
                 strokeWidth="2"
@@ -797,7 +847,9 @@ const MenuIcon = createIcon({
     path: (
         <>
             <Path d="M4 12H20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M4 6H20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M4 18H20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -890,6 +942,7 @@ const PlayIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M10 8L16 12L10 16V8Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -917,13 +970,16 @@ const RepeatIcon = createIcon({
     path: (
         <>
             <Path d="M17 2L21 6L17 10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M3 11V10C3 8.93913 3.42143 7.92172 4.17157 7.17157C4.92172 6.42143 5.93913 6 7 6H21"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M7 22L3 18L7 14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M21 13V14C21 15.0609 20.5786 16.0783 19.8284 16.8284C19.0783 17.5786 18.0609 18 17 18H3"
                 strokeWidth="2"
@@ -942,19 +998,23 @@ const Repeat1Icon = createIcon({
     path: (
         <>
             <Path d="M17 2L21 6L17 10" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M3 11V10C3 8.93913 3.42143 7.92172 4.17157 7.17157C4.92172 6.42143 5.93913 6 7 6H21"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M7 22L3 18L7 14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path
                 d="M21 13V14C21 15.0609 20.5786 16.0783 19.8284 16.8284C19.0783 17.5786 18.0609 18 17 18H3"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M11 10H12V14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -974,6 +1034,7 @@ const SearchIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M21 21L16.65 16.65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -993,6 +1054,7 @@ const SettingsIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
                 strokeWidth="2"
@@ -1017,19 +1079,23 @@ const ShareIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M8.59 13.51L15.42 17.49" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M15.41 6.51L8.59 10.49" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -1049,6 +1115,7 @@ const SlashIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M4.92999 4.92999L19.07 19.07" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -1086,13 +1153,21 @@ const SunIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path d="M12 2V4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M12 20V22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M4.92999 4.93L6.33999 6.34" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M17.66 17.66L19.07 19.07" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M2 12H4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M20 12H22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M6.33999 17.66L4.92999 19.07" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M19.07 4.93L17.66 6.34" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -1112,12 +1187,14 @@ const ThreeDotsIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44771 11 4 11.4477 4 12C4 12.5523 4.44771 13 5 13Z"
                 strokeWidth="2"
@@ -1137,7 +1214,9 @@ const TrashIcon = createIcon({
     path: (
         <>
             <Path d="M3 6H21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+
             <Path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
@@ -1157,6 +1236,7 @@ const UnlockIcon = createIcon({
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <Path
                 d="M7 11V7C6.99876 5.76005 7.45828 4.56387 8.28938 3.64367C9.12047 2.72347 10.2638 2.1449 11.4975 2.02029C12.7312 1.89568 13.9671 2.2339 14.9655 2.96931C15.9638 3.70472 16.6533 4.78485 16.9 6"
                 strokeWidth="2"

@@ -92,6 +92,7 @@ export function GluestackUIProvider({ mode = 'light', ...props }: { mode?: ModeT
                     __html: `(${script.toString()})('${mode}')`,
                 }}
             />
+
             <OverlayProvider>
                 <ToastProvider>{props.children}</ToastProvider>
             </OverlayProvider>

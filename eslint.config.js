@@ -71,6 +71,10 @@ module.exports = defineConfig([
                     next: 'directive',
                 },
             ],
+            'react/jsx-newline': [
+                'error',
+                { prevent: false }, // 2 thẻ cùng cấp phải cách nhau 1 dòng.
+            ],
             '@typescript-eslint/no-floating-promises': 'warn',
             '@typescript-eslint/no-unsafe-assignment': 'warn',
             '@typescript-eslint/no-unsafe-member-access': 'warn',

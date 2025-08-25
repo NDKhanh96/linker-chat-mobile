@@ -64,6 +64,7 @@ export default function Login(): React.JSX.Element {
                     }}
                     alt="image"
                 />
+
                 <Text className="text-2xl font-bold">Linker Chat</Text>
             </View>
 
@@ -160,6 +161,7 @@ export default function Login(): React.JSX.Element {
 
                 <View className="flex-row justify-center gap-x-1">
                     <Text>{t('auth.do_not_have_an_account')}</Text>
+
                     <Link href={'/(auth)/register'} className="text-sky-500 self-end">
                         {t('auth.register_now')}
                     </Link>

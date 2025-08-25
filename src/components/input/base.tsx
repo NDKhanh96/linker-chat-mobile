@@ -44,6 +44,7 @@ export const InputBase = (props: PasswordInputProps) => {
             {label ? (
                 <Text className="text-base font-semibold">
                     {label}
+
                     {required ? (
                         <Text darkColor="red" lightColor="red">
                             *

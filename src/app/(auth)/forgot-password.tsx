@@ -3,9 +3,9 @@ import { Link } from 'expo-router';
 import { Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
+
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase } from '~components/input';
-
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
 import { forgotPasswordSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
@@ -27,6 +27,7 @@ export default function ForgotPassword(): React.JSX.Element {
         <KeyboardAvoidingScrollView className="flex-1 px-5 justify-center gap-y-8">
             <View className="gap-y-2">
                 <Text className="text-3xl font-bold">{t('auth.forgot_password')}</Text>
+
                 <Text className="text-lg text-gray-500">{t('auth.forgot_password_description_1')}</Text>
             </View>
 

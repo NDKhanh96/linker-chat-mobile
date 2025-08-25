@@ -34,6 +34,7 @@ export default function Register(): React.JSX.Element {
         <KeyboardAvoidingScrollView className={`px-5 justify-center gap-y-8 ${Platform.OS === 'android' ? 'mt-10' : ''}`}>
             <View className="gap-y-2">
                 <Text className="text-3xl font-bold">{t('auth.register')}</Text>
+
                 <Text className="text-lg text-gray-500">{t('auth.register_description_1')}</Text>
             </View>
 

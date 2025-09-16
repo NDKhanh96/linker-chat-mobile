@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform } from 'react-native';
@@ -14,6 +14,7 @@ import { registerSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
 export default function Register(): React.JSX.Element {
+    const router = useRouter();
     const [register] = useRegisterMutation();
 
     const {
@@ -26,7 +27,7 @@ export default function Register(): React.JSX.Element {
         const res = await register(data);
 
         if (res.data) {
-            // TODO: navigate to home
+            router.navigate('/(main)');
         }
     };
 
@@ -61,6 +62,7 @@ export default function Register(): React.JSX.Element {
                         inputFieldProps={{
                             onBlur,
                             value,
+                            autoCapitalize: 'none',
                             onChangeText: onChange,
                             placeholder: 'Email',
                         }}
@@ -123,6 +125,9 @@ export default function Register(): React.JSX.Element {
                         }}
                         iconLeftProps={{
                             as: Lock,
+                        }}
+                        iconRightProps={{
+                            className: 'mr-2',
                         }}
                     />
                 )}
@@ -197,9 +202,7 @@ export default function Register(): React.JSX.Element {
                 }}
             />
 
-            <Text className="text-lg text-gray-500 text-center">{t('auth.forgot_password_description_2')}</Text>
-
-            <Link href={'/(auth)'} className="text-sky-500 self-center">
+            <Link dismissTo href={'/(auth)'} className="text-sky-500 self-center">
                 {t('auth.return_to_login')}
             </Link>
         </KeyboardAvoidingScrollView>

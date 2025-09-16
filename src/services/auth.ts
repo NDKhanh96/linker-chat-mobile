@@ -15,8 +15,16 @@ export const registerApi = API.injectEndpoints({
                 method: 'POST',
                 body,
             }),
-            transformResponse: (response: Account) => {
-                return response;
+            onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
+                const { queryFulfilled, dispatch } = mutationLifeCycleApi;
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
             },
         }),
         login: build.mutation<LoginResponse, z.infer<typeof loginSchema>>({

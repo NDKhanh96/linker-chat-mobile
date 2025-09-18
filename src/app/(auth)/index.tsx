@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import { showToast } from '~/redux/slices';
 
+import { showToast } from '~/redux/slices';
 import { useAppDispatch } from '~/redux/store';
 import { useLoginMutation } from '~/services';
 import type { HandleOAuth, LoginResponse, SocialMediaIcon } from '~/types';
@@ -50,8 +50,14 @@ export default function Login(): React.JSX.Element {
     };
 
     const handleLoginSuccess = (data: LoginResponse) => {
-        // TODO: Handle successful login, e.g., navigate to the main app screen
-        console.log('Login result:', data);
+        const { enableEmailOtp, enableTotp } = data;
+
+        if (enableEmailOtp || enableTotp) {
+            router.navigate({ pathname: '/(auth)/otp-submit/[email]', params: { email: data.email } });
+
+            return;
+        }
+        router.replace('/(main)');
     };
 
     return (
@@ -86,6 +92,7 @@ export default function Login(): React.JSX.Element {
                             inputFieldProps={{
                                 onBlur,
                                 value,
+                                autoCapitalize: 'none',
                                 onChangeText: onChange,
                                 placeholder: 'Email',
                             }}

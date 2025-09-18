@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { showToast } from '~/redux/slices';
-import type { Account, LoginResponse } from '~/types';
+import type { Account, AuthToken, LoginResponse } from '~/types';
 import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
 import { getMutationErrorMessage } from '~utils/error-handle';
@@ -42,7 +42,31 @@ export const registerApi = API.injectEndpoints({
                 try {
                     const result = await queryFulfilled;
 
-                    await storeTokens(result.data.authToken);
+                    if (result.data.authToken) {
+                        await storeTokens(result.data.authToken);
+                    }
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
+            },
+        }),
+        validateEmailOtp: build.mutation<{ verified: boolean; authToken: AuthToken }, { email: string; token: string; getAuthTokens: boolean }>({
+            query: body => ({
+                url: 'auth/email-otp/validate',
+                method: 'POST',
+                body,
+            }),
+            onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
+                const { queryFulfilled, dispatch } = mutationLifeCycleApi;
+
+                try {
+                    const result = await queryFulfilled;
+
+                    if (queryArgument.getAuthTokens && result.data?.authToken) {
+                        await storeTokens(result.data.authToken);
+                    }
                 } catch (error) {
                     const message = getMutationErrorMessage(error);
 
@@ -75,4 +99,4 @@ export const registerApi = API.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation, useExchangeSocialCodeMutation } = registerApi;
+export const { useRegisterMutation, useLoginMutation, useValidateEmailOtpMutation, useExchangeSocialCodeMutation } = registerApi;

@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
+import { useForgotPasswordMutation } from '~/services';
 import { ButtonGradientLoading } from '~components/button';
 import { InputBase } from '~components/input';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
@@ -11,16 +12,21 @@ import { forgotPasswordSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
 export default function ForgotPassword(): React.JSX.Element {
+    const router = useRouter();
+    const [forgotPassword] = useForgotPasswordMutation();
+
     const {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<z.infer<typeof forgotPasswordSchema>>({ resolver: zodResolver(forgotPasswordSchema) });
 
-    const handleResetPassword = async (data: z.infer<typeof forgotPasswordSchema>) => {
-        // TODO: Handle reset password logic here
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log(data);
+    const handleForgotPassword = async (data: z.infer<typeof forgotPasswordSchema>) => {
+        const res = await forgotPassword(data);
+
+        if (res.data) {
+            router.navigate({ pathname: '/(auth)/reset-password/[email]', params: { email: data.email } });
+        }
     };
 
     return (
@@ -48,6 +54,7 @@ export default function ForgotPassword(): React.JSX.Element {
                             value,
                             onChangeText: onChange,
                             placeholder: 'Email',
+                            autoCapitalize: 'none',
                         }}
                         iconProps={{
                             as: Mail,
@@ -61,7 +68,7 @@ export default function ForgotPassword(): React.JSX.Element {
                 isLoading={isSubmitting}
                 loadingText={t('global.submitting')}
                 buttonProps={{
-                    onPress: handleSubmit(handleResetPassword),
+                    onPress: handleSubmit(handleForgotPassword),
                     disabled: isSubmitting,
                 }}
                 linearGradientProps={{

@@ -12,6 +12,8 @@ export default {
         logging_in: 'Logging in...',
         email_invalid: 'Email is invalid',
         password_required: 'Password is required',
+        password_min_length: 'Password must be at least {{length}} characters',
+        passwords_do_not_match: 'Passwords do not match',
         forgot_password_description_1: 'Enter your email to reset your password',
         forgot_password_description_2: 'We will send you an email with instructions to reset your password.',
         return_to_login: 'Return to login',
@@ -25,5 +27,16 @@ export default {
         first_name: 'First Name',
         last_name: 'Last Name',
         add_avatar: 'Add an avatar',
+    },
+    forgot_password: {
+        success_response: 'We have sent a verification code to your email',
+        token_required: 'Verification code is required',
+    },
+    reset_password: {
+        reset_password_screen_title: 'Reset password',
+        reset_password_description_1: 'Enter your verification code and new password',
+        verification_code: 'Verification Code',
+        new_password: 'New Password',
+        confirm_new_password: 'Confirm New Password',
     },
 };

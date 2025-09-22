@@ -5,6 +5,7 @@ import { Button } from 'react-native';
 import { useValidateEmailOtpMutation } from '~/services';
 import { OTPInput, type OTPInputRef } from '~components/input';
 import { Text, View } from '~components/themed';
+import { t } from '~utils/locales';
 
 /**
  * Screen này cần phải có email lấy từ params
@@ -33,7 +34,7 @@ export default function OTP(): React.JSX.Element {
         <View className="flex-1 items-center justify-center px-5 gap-y-8">
             <Text className="text-2xl font-bold">Enter OTP</Text>
 
-            <Text className="text-gray-500 text-center">We have sent a verification code to your email</Text>
+            <Text className="text-gray-500 text-center">{t('forgot_password.success_response')}</Text>
 
             <OTPInput ref={otpInputRef} onComplete={handleOTPComplete} />
 

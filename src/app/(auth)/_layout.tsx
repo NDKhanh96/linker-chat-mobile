@@ -8,6 +8,10 @@ export default function AuthLayout(): React.JSX.Element {
             <Stack.Screen name="register" />
 
             <Stack.Screen name="forgot-password" />
+
+            <Stack.Screen name="otp-submit/[email]" />
+
+            <Stack.Screen name="reset-password/[email]" />
         </Stack>
     );
 }

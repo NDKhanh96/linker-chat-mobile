@@ -15,6 +15,7 @@ export const registerApi = API.injectEndpoints({
                 method: 'POST',
                 body,
             }),
+
             onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
                 const { queryFulfilled, dispatch } = mutationLifeCycleApi;
 
@@ -27,15 +28,18 @@ export const registerApi = API.injectEndpoints({
                 }
             },
         }),
+
         login: build.mutation<LoginResponse, z.infer<typeof loginSchema>>({
             query: body => ({
                 url: 'auth/login',
                 method: 'POST',
                 body,
             }),
+
             async transformResponse(response: LoginResponse) {
                 return response;
             },
+
             onQueryStarted: async (arg, mutationLifeCycleApi) => {
                 const { queryFulfilled, dispatch } = mutationLifeCycleApi;
 
@@ -52,12 +56,14 @@ export const registerApi = API.injectEndpoints({
                 }
             },
         }),
+
         validateEmailOtp: build.mutation<{ verified: boolean; authToken: AuthToken }, { email: string; token: string; getAuthTokens: boolean }>({
             query: body => ({
                 url: 'auth/email-otp/validate',
                 method: 'POST',
                 body,
             }),
+
             onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
                 const { queryFulfilled, dispatch } = mutationLifeCycleApi;
 
@@ -74,15 +80,58 @@ export const registerApi = API.injectEndpoints({
                 }
             },
         }),
+
+        forgotPassword: build.mutation<{ message: string }, { email: string }>({
+            query: body => ({
+                url: 'auth/forgot-password',
+                method: 'POST',
+                body,
+            }),
+
+            onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
+                const { queryFulfilled, dispatch } = mutationLifeCycleApi;
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
+            },
+        }),
+
+        resetPassword: build.mutation<{ message: string }, { email: string }>({
+            query: body => ({
+                url: 'auth/reset-password',
+                method: 'POST',
+                body,
+            }),
+
+            onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {
+                const { queryFulfilled, dispatch } = mutationLifeCycleApi;
+
+                try {
+                    await queryFulfilled;
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
+            },
+        }),
+
         exchangeSocialCode: build.mutation<LoginResponse, { provider: string; code: string; codeVerifier: string }>({
             query: ({ provider, code, codeVerifier }) => ({
                 url: `auth/${provider}/login`,
                 method: 'POST',
                 body: { code, codeVerifier },
             }),
+
             async transformResponse(response: LoginResponse) {
                 return response;
             },
+
             onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
                 try {
                     const result = await queryFulfilled;
@@ -99,4 +148,11 @@ export const registerApi = API.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation, useValidateEmailOtpMutation, useExchangeSocialCodeMutation } = registerApi;
+export const {
+    useRegisterMutation,
+    useLoginMutation,
+    useValidateEmailOtpMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
+    useExchangeSocialCodeMutation,
+} = registerApi;

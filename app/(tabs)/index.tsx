@@ -5,6 +5,7 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { EditIcon, EyeOffIcon, Icon } from '@/components/ui/icon';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
@@ -74,6 +75,11 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+      <Icon as={EditIcon} size="lg" />;
+
+      <Icon as={EditIcon} size="lg" stroke="currentColor" />
+
+      <Icon as={EyeOffIcon} size="lg" stroke="currentColor" />
     </ParallaxScrollView>
   );
 }

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "linker-chat",
+    "slug": "linker-chat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "linkerchat",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

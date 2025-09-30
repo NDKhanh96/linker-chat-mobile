@@ -1,7 +1,48 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.organizeImports": "explicit",
-    "source.sortMembers": "explicit"
-  }
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "always",
+      "source.sortMembers": "explicit"
+    },
+    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "cSpell.words": [
+        ".easignore",
+        "clsx",
+        "Entypo",
+        "extrablack",
+        "Favourite",
+        "flatlist",
+        "Fontisto",
+        "forwardslash",
+        "gluestack",
+        "hookform",
+        "Ionicons",
+        "jscodeshift",
+        "legendapp",
+        "logomark",
+        "lucide",
+        "notifee",
+        "paperplane",
+        "Pressable",
+        "reduxjs",
+        "roboto",
+        "romaji",
+        "Tamagui",
+        "Totp",
+        "unimodules",
+        "unistyles",
+        "worklets"
+    ],
+    "cSpell.ignorePaths": [
+        "yarn.lock",
+        "package-lock.json",
+        "node_modules/**",
+        ".gitignore",
+        ".env",
+        ".easignore",
+    ],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }

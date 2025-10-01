@@ -1,26 +1,62 @@
+import { debounce } from 'lodash';
+import { Platform, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+
+import type { RootState } from '~/redux/store';
+import { t } from '~utils/locales';
+
+import { useRouter } from 'expo-router';
 import { SearchInput } from '~components/input';
-import { Text, View } from '~components/themed';
-import { EditIcon, EyeOffIcon, Icon, SearchIcon } from '~components/ui/icon';
+import { KeyboardAvoidingScrollView, View } from '~components/themed';
+import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '~components/ui/avatar';
+import { Heading } from '~components/ui/heading';
+import { SearchIcon } from '~components/ui/icon';
 
 export default function Home(): React.JSX.Element {
+    const router = useRouter();
+
+    const profile = useSelector((state: RootState) => state.user.profile);
+
+    const handleSearch = debounce((text: string) => {
+        if (text.trim()) {
+            // TODO: Gọi API search
+        }
+    }, 300);
+
+    const handleProfilePress = (): void => {
+        router.navigate({ pathname: '/(main)/(menu)' });
+    };
+
     return (
-        <View className="flex-1 px-5 justify-center gap-y-16">
-            <View>
-                <SearchInput
-                    inputFieldProps={{ placeholder: 'Search', className: 'flex-1' }}
-                    iconProps={{ as: SearchIcon, size: 'xl', className: 'rounded-sm' }}
-                />
+        <KeyboardAvoidingScrollView className={`px-5 flex-1 gap-y-8 ${Platform.OS === 'android' ? 'mt-10' : ''}`}>
+            <View className="flex-row items-center justify-between">
+                <Heading size="3xl" bold italic className="text-blue-600">
+                    Linker Chat
+                </Heading>
 
-                <Icon as={EditIcon} size="lg" fill="#ffffff" stroke="currentColor" />
+                <TouchableOpacity onPress={handleProfilePress}>
+                    <Avatar size="sm">
+                        <AvatarFallbackText>{profile.firstName || profile.email}</AvatarFallbackText>
 
-                <Icon as={EyeOffIcon} size="lg" fill="#ffffff" stroke="currentColor" />
+                        <AvatarImage
+                            source={{
+                                uri: profile.avatar,
+                            }}
+                        />
 
-                <Icon as={EditIcon} size="lg" stroke="currentColor" />
-
-                <Icon as={EyeOffIcon} size="lg" stroke="currentColor" />
-
-                <Text>Home Screen</Text>
+                        <AvatarBadge />
+                    </Avatar>
+                </TouchableOpacity>
             </View>
-        </View>
+
+            <SearchInput
+                inputFieldProps={{
+                    placeholder: t('place_holders.search'),
+                    className: 'flex-1 ',
+                    onChangeText: handleSearch,
+                }}
+                iconProps={{ as: SearchIcon, size: 'xl', className: 'rounded-sm' }}
+            />
+        </KeyboardAvoidingScrollView>
     );
 }

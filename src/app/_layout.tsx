@@ -9,8 +9,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 
+import { setProfileByAccessToken } from '~/redux/slices';
 import { store } from '~/redux/store';
 import SpaceMono from '~assets/fonts/SpaceMono-Regular.ttf';
 import { SafeAreaView } from '~components/themed';
@@ -70,6 +71,18 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const token = SecureStore.getItem('accessToken');
+
+        if (!token) {
+            return;
+        }
+
+        dispatch(setProfileByAccessToken(token));
+    }, [dispatch]);
 
     /**
      * mode needs to be set to system for enable switching between light and dark mode

@@ -26,6 +26,25 @@ export const storeTokens = async (authToken?: { accessToken?: string; refreshTok
     }
 };
 
+function base64UrlDecode(str: string): string {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+
+    const padding = '='.repeat((4 - (str.length % 4)) % 4);
+
+    str += padding;
+
+    try {
+        const decoded = atob(str);
+
+        const utf8Decoder = new TextDecoder('utf-8');
+        const bytes = new Uint8Array(decoded.split('').map(char => char.charCodeAt(0)));
+
+        return utf8Decoder.decode(bytes);
+    } catch {
+        return atob(str);
+    }
+}
+
 export const decodeJWT = <T = Record<string, unknown>>(token: string): T => {
     try {
         const parts = token.split('.');
@@ -36,9 +55,7 @@ export const decodeJWT = <T = Record<string, unknown>>(token: string): T => {
 
         const payload = parts[1];
 
-        const paddedPayload = payload + '='.repeat((4 - (payload.length % 4)) % 4);
-
-        const decodedPayload = atob(paddedPayload);
+        const decodedPayload = base64UrlDecode(payload);
 
         return JSON.parse(decodedPayload) as T;
     } catch (error) {

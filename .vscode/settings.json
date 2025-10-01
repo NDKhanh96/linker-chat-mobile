@@ -8,6 +8,10 @@
       "source.sortMembers": "explicit"
     },
     "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "tailwindCSS.experimental.classRegex": [
+      "className:\\s*['\"]([^'\"]*)['\"]",
+      ["tva\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ],
     "cSpell.words": [
         ".easignore",
         "clsx",

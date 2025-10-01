@@ -25,3 +25,23 @@ export const storeTokens = async (authToken?: { accessToken?: string; refreshTok
         });
     }
 };
+
+export const decodeJWT = <T = Record<string, unknown>>(token: string): T => {
+    try {
+        const parts = token.split('.');
+
+        if (parts.length !== 3) {
+            throw new Error('Invalid JWT format');
+        }
+
+        const payload = parts[1];
+
+        const paddedPayload = payload + '='.repeat((4 - (payload.length % 4)) % 4);
+
+        const decodedPayload = atob(paddedPayload);
+
+        return JSON.parse(decodedPayload) as T;
+    } catch (error) {
+        throw error;
+    }
+};

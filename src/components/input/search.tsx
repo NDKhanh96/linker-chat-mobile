@@ -1,4 +1,3 @@
-import { useColorScheme } from 'react-native';
 import { Input, InputField, InputIcon, InputSlot } from '~components/ui/input';
 
 type SearchInputProps = {
@@ -18,14 +17,11 @@ type SearchInputProps = {
 
 export function SearchInput(props: SearchInputProps): React.JSX.Element {
     const { inputProps, inputFieldProps, iconProps } = props;
-    const colorScheme = useColorScheme();
 
     return (
         <Input {...inputProps}>
             <InputSlot className="pl-3">
                 <InputIcon {...iconProps} />
-
-                {/* <InputIcon {...iconProps} fill={colorScheme === 'light' ? '#ffffff' : '#000000'} /> */}
             </InputSlot>
 
             <InputField {...inputFieldProps} />

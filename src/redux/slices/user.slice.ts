@@ -1,4 +1,5 @@
 import { createSlice, type ActionReducerMapBuilder, type PayloadAction } from '@reduxjs/toolkit';
+import * as SecureStore from 'expo-secure-store';
 
 import { decodeJWT } from '~utils/common';
 
@@ -12,6 +13,7 @@ type InitialState = {
         iat: number;
         sub: number;
     };
+    nameOrder: 'western' | 'eastern';
 };
 
 const initialState: InitialState = {
@@ -24,6 +26,7 @@ const initialState: InitialState = {
         iat: NaN,
         sub: NaN,
     },
+    nameOrder: SecureStore.getItem('nameOrder') === 'western' ? 'western' : 'eastern',
 };
 
 export const userSlice = createSlice({
@@ -38,6 +41,9 @@ export const userSlice = createSlice({
 
             state.profile = profile;
         },
+        setNameOrder(state, action: PayloadAction<'western' | 'eastern'>) {
+            state.nameOrder = action.payload;
+        },
     },
     /**
      * Dùng để dispatch action bất đồng bộ như call API
@@ -45,4 +51,4 @@ export const userSlice = createSlice({
     extraReducers(_builder: ActionReducerMapBuilder<InitialState>): void {},
 });
 
-export const { setProfileByAccessToken } = userSlice.actions;
+export const { setProfileByAccessToken, setNameOrder } = userSlice.actions;

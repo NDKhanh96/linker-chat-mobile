@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import devToolsEnhancer from 'redux-devtools-expo-dev-plugin';
 
+import { secureStoreMiddleware } from '~/redux/middleware/secure-store-middleware';
 import { authSlice, toastSlice, userSlice } from '~/redux/slices';
 import { API } from '~utils/configs';
 
@@ -17,7 +18,7 @@ export const store = (preloadedState?: Partial<RootState>) => {
         reducer: rootReducer,
         preloadedState,
         devTools: false,
-        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(API.middleware),
+        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(API.middleware).concat(secureStoreMiddleware.middleware),
         enhancers: getDefaultEnhancers => getDefaultEnhancers().concat(devToolsEnhancer()),
     });
 };

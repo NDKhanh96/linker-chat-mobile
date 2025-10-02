@@ -38,11 +38,13 @@ export default function Home(): React.JSX.Element {
                     <Avatar size="sm">
                         <AvatarFallbackText>{profile.firstName || profile.email}</AvatarFallbackText>
 
-                        <AvatarImage
-                            source={{
-                                uri: profile.avatar,
-                            }}
-                        />
+                        {profile.avatar?.trim() && (
+                            <AvatarImage
+                                source={{
+                                    uri: profile.avatar,
+                                }}
+                            />
+                        )}
 
                         <AvatarBadge />
                     </Avatar>

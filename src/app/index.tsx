@@ -1,12 +1,12 @@
 import { Redirect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { setProfileByAccessToken, showToast } from '~/redux/slices';
+import { useAppDispatch } from '~/redux/store';
 
 export default function Index() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAuthChecked, setIsAuthChecked] = useState(false);

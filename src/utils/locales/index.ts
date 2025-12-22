@@ -11,7 +11,19 @@ const translations = {
 
 const i18n = new I18n(translations);
 
-export const t = i18n.t.bind(i18n);
+type LocaleMap = typeof translations;
+
+type LocaleName = keyof LocaleMap;
+
+type Locale = LocaleMap[LocaleName];
+
+type PathInto<T extends Record<string, unknown>> = keyof {
+    [K in keyof T as T[K] extends string ? K : T[K] extends Record<string, unknown> ? `${K & string}.${PathInto<T[K]> & string}` : never]: unknown;
+};
+
+export type TranslationKeys = PathInto<Locale>;
+
+export const t = (key: TranslationKeys, options?: Record<string, unknown>): string => i18n.t(key, options);
 
 /**
  * Đặt ngôn ngữ mặc định cho ứng dụng theo ngôn ngữ hiện tại của máy.

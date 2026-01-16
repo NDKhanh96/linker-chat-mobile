@@ -27,6 +27,11 @@ export default {
         first_name: 'First Name',
         last_name: 'Last Name',
         add_avatar: 'Add an avatar',
+        privacy_and_security: 'Privacy & Security',
+        change_password: 'Change Password',
+        change_password_title: 'Change Your Password',
+        current_password: 'Current Password',
+        change_password_description_1: 'Enter your current password and a new password',
     },
     forgot_password: {
         success_response: 'We have sent a verification code to your email',
@@ -38,5 +43,15 @@ export default {
         verification_code: 'Verification Code',
         new_password: 'New Password',
         confirm_new_password: 'Confirm New Password',
+    },
+    place_holders: {
+        search: 'Search...',
+    },
+    profile: {
+        edit_profile: 'Edit Profile',
+        edit_profile_description_1: 'Update your profile information',
+    },
+    menu: {
+        use_western_name_order: 'Use Western Name Order',
     },
 };

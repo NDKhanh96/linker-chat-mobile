@@ -35,3 +35,20 @@ export const resetPasswordSchema = z
         message: t('auth.passwords_do_not_match'),
         path: ['confirmPassword'],
     });
+
+export const changePasswordSchema = z
+    .object({
+        oldPassword: z.string().min(1, t('auth.password_required')),
+        newPassword: z.string().min(6, t('auth.password_min_length', { length: 6 })),
+        confirmPassword: z.string().min(6, t('auth.password_min_length', { length: 6 })),
+    })
+    .refine(data => data.newPassword === data.confirmPassword, {
+        message: t('auth.passwords_do_not_match'),
+        path: ['confirmPassword'],
+    });
+
+export const updateProfileSchema = z.object({
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    avatar: z.string().optional(),
+});

@@ -23,6 +23,8 @@ export default function Index() {
         } catch (error) {
             if (error instanceof Error) {
                 dispatch(showToast({ title: 'Error', description: error.message, type: 'error' }));
+            } else {
+                dispatch(showToast({ title: 'Error', description: 'An unknown error occurred', type: 'error' }));
             }
         } finally {
             setIsAuthChecked(true);

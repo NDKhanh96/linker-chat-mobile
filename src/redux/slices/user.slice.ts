@@ -9,9 +9,6 @@ type InitialState = {
         firstName: string;
         lastName: string;
         avatar: string;
-        exp: number;
-        iat: number;
-        sub: number;
     };
     nameOrder: 'western' | 'eastern';
 };
@@ -22,9 +19,6 @@ const initialState: InitialState = {
         firstName: '',
         lastName: '',
         avatar: '',
-        exp: NaN,
-        iat: NaN,
-        sub: NaN,
     },
     nameOrder: SecureStore.getItem('nameOrder') === 'western' ? 'western' : 'eastern',
 };
@@ -41,6 +35,9 @@ export const userSlice = createSlice({
 
             state.profile = profile;
         },
+        setProfile(state, action: PayloadAction<InitialState['profile']>) {
+            state.profile = action.payload;
+        },
         setNameOrder(state, action: PayloadAction<'western' | 'eastern'>) {
             state.nameOrder = action.payload;
         },
@@ -51,4 +48,4 @@ export const userSlice = createSlice({
     extraReducers(_builder: ActionReducerMapBuilder<InitialState>): void {},
 });
 
-export const { setProfileByAccessToken, setNameOrder } = userSlice.actions;
+export const { setProfileByAccessToken, setProfile, setNameOrder } = userSlice.actions;

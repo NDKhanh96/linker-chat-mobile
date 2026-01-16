@@ -1,4 +1,6 @@
-export default {
+import en from '~/utils/locales/english';
+
+const vi: typeof en = {
     global: {
         submit: 'Gửi yêu cầu',
         submitting: 'Đang gửi yêu cầu...',
@@ -27,6 +29,11 @@ export default {
         first_name: 'Họ',
         last_name: 'Tên',
         add_avatar: 'Thêm ảnh đại diện',
+        privacy_and_security: 'Quyền riêng tư & Bảo mật',
+        change_password: 'Đổi mật khẩu',
+        change_password_title: 'Đổi mật khẩu của bạn',
+        current_password: 'Mật khẩu hiện tại',
+        change_password_description_1: 'Nhập mật khẩu hiện tại và mật khẩu mới của bạn',
     },
     forgot_password: {
         success_response: 'Chúng tôi đã gửi mã xác minh đến email của bạn',
@@ -39,4 +46,16 @@ export default {
         new_password: 'Mật khẩu mới',
         confirm_new_password: 'Xác nhận mật khẩu mới',
     },
+    place_holders: {
+        search: 'Tìm kiếm...',
+    },
+    profile: {
+        edit_profile: 'Chỉnh sửa hồ sơ',
+        edit_profile_description_1: 'Cập nhật thông tin hồ sơ của bạn',
+    },
+    menu: {
+        use_western_name_order: 'Sử dụng thứ tự tên phương Tây',
+    },
 };
+
+export default vi;

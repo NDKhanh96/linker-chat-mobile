@@ -1,11 +1,11 @@
 import { debounce } from 'lodash';
 import { Platform, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 import type { RootState } from '~/redux/store';
 import { t } from '~utils/locales';
 
-import { useRouter } from 'expo-router';
 import { SearchInput } from '~components/input';
 import { KeyboardAvoidingScrollView, View } from '~components/themed';
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '~components/ui/avatar';

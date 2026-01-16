@@ -1,11 +1,9 @@
 import { Stack } from 'expo-router';
 
-export default function AuthLayout(): React.JSX.Element {
+export default function MenuLayout(): React.JSX.Element {
     return (
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-
-            <Stack.Screen name="(menu)" />
         </Stack>
     );
 }

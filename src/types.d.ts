@@ -1,4 +1,13 @@
 import type AntDesign from '@expo/vector-icons/AntDesign';
+import type { NavigationProp } from '@react-navigation/native';
+
+type RootLayoutScreen = {
+    index: undefined;
+    '(auth)': undefined;
+    '(main)': undefined;
+};
+
+export type RootNav = NavigationProp<RootLayoutScreen>;
 
 export type Account = {
     id: number;

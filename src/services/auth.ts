@@ -5,9 +5,9 @@ import type { Account, AuthToken, LoginResponse } from '~/types';
 import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
 import { getMutationErrorMessage } from '~utils/error-handle';
-import type { loginSchema, registerSchema } from '~utils/form-schema';
+import type { changePasswordSchema, loginSchema, registerSchema } from '~utils/form-schema';
 
-export const registerApi = API.injectEndpoints({
+const authApi = API.injectEndpoints({
     endpoints: build => ({
         register: build.mutation<Account, z.infer<typeof registerSchema>>({
             query: body => ({
@@ -73,6 +73,28 @@ export const registerApi = API.injectEndpoints({
                     if (queryArgument.getAuthTokens && result.data?.authToken) {
                         await storeTokens(result.data.authToken);
                     }
+                } catch (error) {
+                    const message = getMutationErrorMessage(error);
+
+                    dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
+                }
+            },
+        }),
+
+        changePassword: build.mutation<{ message: string }, z.infer<typeof changePasswordSchema>>({
+            query: body => ({
+                url: `auth/change-password`,
+                method: 'POST',
+                body: body,
+            }),
+
+            async transformResponse(response: { message: string }) {
+                return response;
+            },
+
+            onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+                try {
+                    await queryFulfilled;
                 } catch (error) {
                     const message = getMutationErrorMessage(error);
 
@@ -152,7 +174,8 @@ export const {
     useRegisterMutation,
     useLoginMutation,
     useValidateEmailOtpMutation,
+    useChangePasswordMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
     useExchangeSocialCodeMutation,
-} = registerApi;
+} = authApi;

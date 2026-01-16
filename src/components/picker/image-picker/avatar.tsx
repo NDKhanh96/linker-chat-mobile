@@ -1,5 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
-import * as ExpoImagePicker from 'expo-image-picker';
+import { launchImageLibraryAsync } from 'expo-image-picker';
 import { Image, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '~components/themed';
@@ -18,15 +18,18 @@ export function AvatarPicker(props: AvatarPickerProps) {
     const { value, onChange, buttonClassName, containerClassName, imageClassName, text, textClassName } = props;
 
     const pickImage = async () => {
-        const result = await ExpoImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images', 'videos'],
+        const result = await launchImageLibraryAsync({
+            mediaTypes: ['images'],
             allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
+            base64: true,
+            aspect: [1, 1],
+            quality: 0.7,
         });
 
         if (!result.canceled) {
-            onChange(result.assets[0].uri);
+            const base64 = `data:image/jpeg;base64,${result.assets[0].base64}`;
+
+            onChange(base64);
         }
     };
 

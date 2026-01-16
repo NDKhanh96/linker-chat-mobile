@@ -9,7 +9,12 @@ export const registerSchema = z
         confirmPassword: z.string().min(6, t('auth.password_min_length', { length: 6 })),
         firstName: z.string().optional(),
         lastName: z.string().optional(),
-        picture: z.string().optional(),
+        picture: z
+            .string()
+            .optional()
+            .refine(v => !v || v.startsWith('data:image/') || v.startsWith('http'), {
+                message: 'avatar must be base64 image or url',
+            }),
     })
     .refine(data => data.password === data.confirmPassword, {
         message: t('auth.passwords_do_not_match'),
@@ -35,3 +40,29 @@ export const resetPasswordSchema = z
         message: t('auth.passwords_do_not_match'),
         path: ['confirmPassword'],
     });
+
+export const changePasswordSchema = z
+    .object({
+        oldPassword: z.string().min(1, t('auth.password_required')),
+        newPassword: z.string().min(6, t('auth.password_min_length', { length: 6 })),
+        confirmPassword: z.string().min(6, t('auth.password_min_length', { length: 6 })),
+    })
+    .refine(data => data.newPassword === data.confirmPassword, {
+        message: t('auth.passwords_do_not_match'),
+        path: ['confirmPassword'],
+    });
+
+/**
+ * Schema cập nhật profile
+ * - avatar không có: Không cập nhật avatar
+ * - avatar là object: Upload file mới từ image picker
+ * - avatar là empty string: Xóa avatar hiện tại
+ */
+export const updateProfileSchema = z.object({
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    avatar: z
+        .string()
+        .optional()
+        .refine(v => !v || v.startsWith('data:image/') || v.startsWith('http'), { message: 'avatar must be base64 image or url' }),
+});

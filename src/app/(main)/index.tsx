@@ -1,11 +1,12 @@
+import { useRouter } from 'expo-router';
 import { debounce } from 'lodash';
 import { Platform, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'expo-router';
 
 import type { RootState } from '~/redux/store';
 import { t } from '~utils/locales';
 
+import { useProfileQuery } from '~/services';
 import { SearchInput } from '~components/input';
 import { KeyboardAvoidingScrollView, View } from '~components/themed';
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '~components/ui/avatar';
@@ -14,6 +15,8 @@ import { SearchIcon } from '~components/ui/icon';
 
 export default function Home(): React.JSX.Element {
     const router = useRouter();
+
+    useProfileQuery();
 
     const profile = useSelector((state: RootState) => state.user.profile);
 

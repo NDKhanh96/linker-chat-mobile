@@ -2,6 +2,7 @@ import type { z } from 'zod';
 
 import { setProfile, showToast } from '~/redux/slices';
 import { API } from '~utils/configs';
+import { BASE_URL } from '~utils/environment';
 import { getMutationErrorMessage } from '~utils/error-handle';
 import type { updateProfileSchema } from '~utils/form-schema';
 
@@ -38,6 +39,15 @@ const userApi = API.injectEndpoints({
                 method: 'GET',
             }),
 
+            async transformResponse(response: Profile) {
+                const avatar = response.avatar || '';
+
+                return {
+                    ...response,
+                    avatar: BASE_URL + avatar,
+                };
+            },
+
             onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
                 try {
                     const { data } = await queryFulfilled;
@@ -65,6 +75,15 @@ const userApi = API.injectEndpoints({
                 method: 'PATCH',
                 body,
             }),
+
+            async transformResponse(response: Profile) {
+                const avatar = response.avatar || '';
+
+                return {
+                    ...response,
+                    avatar: BASE_URL + avatar,
+                };
+            },
 
             onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
                 /**

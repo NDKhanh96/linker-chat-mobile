@@ -4,7 +4,7 @@ import { Lock, Mail } from 'lucide-react-native';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { showToast } from '~/redux/slices';
+import { setProfile, showToast } from '~/redux/slices';
 import { useAppDispatch } from '~/redux/store';
 import { useLoginMutation } from '~/services';
 import type { HandleOAuth, LoginResponse, SocialMediaIcon } from '~/types';
@@ -13,6 +13,7 @@ import { InputBase, InputPassword } from '~components/input';
 import { Divider } from '~components/line';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
 import { Image } from '~components/ui/image';
+import { getProfileFromToken } from '~utils/common';
 import { loginSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
@@ -50,13 +51,15 @@ export default function Login(): React.JSX.Element {
     };
 
     const handleLoginSuccess = (data: LoginResponse) => {
-        const { enableEmailOtp, enableTotp } = data;
+        const { enableEmailOtp, enableTotp, authToken } = data;
 
-        if (enableEmailOtp || enableTotp) {
+        if (enableEmailOtp || enableTotp || !authToken) {
             router.navigate({ pathname: '/(auth)/otp-submit/[email]', params: { email: data.email } });
 
             return;
         }
+        dispatch(setProfile(getProfileFromToken(authToken.accessToken)));
+
         router.replace('/(main)');
     };
 

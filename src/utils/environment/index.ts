@@ -1,4 +1,4 @@
-const BASE_URL_ENV: string | undefined = process.env.EXPO_PUBLIC_API_URL;
+const BASE_URL_ENV: string | undefined = process.env.EXPO_PUBLIC_BE_URL;
 
 //#region Validation
 if (!BASE_URL_ENV) {
@@ -7,3 +7,4 @@ if (!BASE_URL_ENV) {
 //#endregion
 
 export const BASE_URL: string = BASE_URL_ENV;
+export const BASE_URL_API: string = BASE_URL_ENV + '/api';

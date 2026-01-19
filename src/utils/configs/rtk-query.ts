@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs } from '@re
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 
-import { BASE_URL } from '~utils/environment';
+import { BASE_URL_API } from '~utils/environment';
 import { getBaseQueryErrorMessage } from '~utils/error-handle';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_URL,
+    baseUrl: BASE_URL_API,
     prepareHeaders: async headers => {
         const token = await SecureStore.getItemAsync('accessToken');
 

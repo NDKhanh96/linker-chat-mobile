@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useExchangeSocialCodeMutation } from '~/services';
 import { OAuthPlatform } from '~/types';
-import { BASE_URL } from '~utils/environment';
+import { BASE_URL_API } from '~utils/environment';
 
 type OAuthProviderConfig = {
     config: {
@@ -35,7 +35,7 @@ const configs: Record<OAuthPlatform, OAuthProviderConfig> = {
             redirectUri: makeRedirectUri(),
         },
         discovery: {
-            authorizationEndpoint: `${BASE_URL}/auth/social/login`,
+            authorizationEndpoint: `${BASE_URL_API}/auth/social/login`,
         },
     },
     facebook: {
@@ -45,7 +45,7 @@ const configs: Record<OAuthPlatform, OAuthProviderConfig> = {
             redirectUri: makeRedirectUri(),
         },
         discovery: {
-            authorizationEndpoint: `${BASE_URL}/auth/social/login`,
+            authorizationEndpoint: `${BASE_URL_API}/auth/social/login`,
         },
     },
     github: {
@@ -55,7 +55,7 @@ const configs: Record<OAuthPlatform, OAuthProviderConfig> = {
             redirectUri: makeRedirectUri(),
         },
         discovery: {
-            authorizationEndpoint: `${BASE_URL}/auth/social/login`,
+            authorizationEndpoint: `${BASE_URL_API}/auth/social/login`,
         },
     },
 };

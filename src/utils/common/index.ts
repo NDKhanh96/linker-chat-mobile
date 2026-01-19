@@ -1,5 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
+import { BASE_URL } from '~utils/environment';
+
 /**
  *
  * @param authToken - The authentication token object containing access and refresh tokens.
@@ -61,4 +63,11 @@ export const decodeJWT = <T = Record<string, unknown>>(token: string): T => {
     } catch (error) {
         throw error;
     }
+};
+
+export const getProfileFromToken = (token: string) => {
+    const profile = decodeJWT<{ email: string; firstName: string; lastName: string; avatar: string }>(token);
+    const avatar = profile.avatar || '';
+
+    return { ...profile, avatar: BASE_URL + avatar };
 };

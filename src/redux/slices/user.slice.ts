@@ -1,8 +1,6 @@
 import { createSlice, type ActionReducerMapBuilder, type PayloadAction } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 
-import { decodeJWT } from '~utils/common';
-
 type InitialState = {
     profile: {
         email: string;
@@ -30,11 +28,6 @@ export const userSlice = createSlice({
      * Dùng để dispatch action đồng bộ
      */
     reducers: {
-        setProfileByAccessToken(state, action: PayloadAction<string>) {
-            const profile = decodeJWT<InitialState['profile']>(action.payload);
-
-            state.profile = profile;
-        },
         setProfile(state, action: PayloadAction<InitialState['profile']>) {
             state.profile = action.payload;
         },
@@ -48,4 +41,4 @@ export const userSlice = createSlice({
     extraReducers(_builder: ActionReducerMapBuilder<InitialState>): void {},
 });
 
-export const { setProfileByAccessToken, setProfile, setNameOrder } = userSlice.actions;
+export const { setProfile, setNameOrder } = userSlice.actions;

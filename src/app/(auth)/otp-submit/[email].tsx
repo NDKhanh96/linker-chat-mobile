@@ -2,9 +2,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useRef } from 'react';
 import { Button } from 'react-native';
 
+import { setProfile } from '~/redux/slices/user.slice';
+import { useAppDispatch } from '~/redux/store';
 import { useValidateEmailOtpMutation } from '~/services';
 import { OTPInput, type OTPInputRef } from '~components/input';
 import { Text, View } from '~components/themed';
+import { getProfileFromToken } from '~utils/common';
 import { t } from '~utils/locales';
 
 /**
@@ -12,6 +15,7 @@ import { t } from '~utils/locales';
  */
 export default function OTP(): React.JSX.Element {
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const { email } = useLocalSearchParams<{ email: string }>();
 
     const [validateEmailOTP] = useValidateEmailOtpMutation();
@@ -26,6 +30,7 @@ export default function OTP(): React.JSX.Element {
         const res = await validateEmailOTP({ email, token: otp, getAuthTokens: true });
 
         if (res.data?.verified) {
+            dispatch(setProfile(getProfileFromToken(res.data.authToken.accessToken)));
             router.replace('/(main)');
         }
     };

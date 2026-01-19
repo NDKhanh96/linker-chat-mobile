@@ -27,7 +27,10 @@ export function AvatarPicker(props: AvatarPickerProps) {
         });
 
         if (!result.canceled) {
-            const base64 = `data:image/jpeg;base64,${result.assets[0].base64}`;
+            const asset = result.assets[0];
+
+            const mimeType = asset.mimeType || 'image/jpeg';
+            const base64 = `data:${mimeType};base64,${asset.base64}`;
 
             onChange(base64);
         }

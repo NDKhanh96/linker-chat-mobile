@@ -2,7 +2,7 @@ const BASE_URL_ENV: string | undefined = process.env.EXPO_PUBLIC_BE_URL;
 
 //#region Validation
 if (!BASE_URL_ENV) {
-    throw new Error('Cần thêm biến môi trường EXPO_PUBLIC_API_URL vào .env');
+    throw new Error('Cần thêm biến môi trường EXPO_PUBLIC_BE_URL vào .env');
 }
 //#endregion
 

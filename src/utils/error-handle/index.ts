@@ -23,7 +23,7 @@ export function getBaseQueryErrorMessage(error: unknown): string {
     return message;
 }
 
-export function getMutationErrorMessage(error: unknown): string {
+export function getFetchErrorMessage(error: unknown): string {
     let message: string = 'RTK-Query Error';
 
     if (error instanceof Error) {

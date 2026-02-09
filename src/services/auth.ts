@@ -5,7 +5,7 @@ import type { Account, AuthToken, LoginResponse } from '~/types';
 import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
 import { BASE_URL } from '~utils/environment';
-import { getMutationErrorMessage } from '~utils/error-handle';
+import { getFetchErrorMessage } from '~utils/error-handle';
 import type { changePasswordSchema, loginSchema, registerSchema } from '~utils/form-schema';
 
 const authApi = API.injectEndpoints({
@@ -35,7 +35,7 @@ const authApi = API.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -63,7 +63,7 @@ const authApi = API.injectEndpoints({
                         await storeTokens(result.data.authToken);
                     }
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -87,7 +87,7 @@ const authApi = API.injectEndpoints({
                         await storeTokens(result.data.authToken);
                     }
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -109,7 +109,7 @@ const authApi = API.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -129,7 +129,7 @@ const authApi = API.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -149,7 +149,7 @@ const authApi = API.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }
@@ -173,7 +173,7 @@ const authApi = API.injectEndpoints({
 
                     await storeTokens(result.data.authToken);
                 } catch (error) {
-                    const message = getMutationErrorMessage(error);
+                    const message = getFetchErrorMessage(error);
 
                     dispatch(showToast({ title: 'Error', description: message, type: 'error' }));
                 }

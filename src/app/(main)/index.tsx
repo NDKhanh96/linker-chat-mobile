@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '~/redux/store';
 import { t } from '~utils/locales';
 
-import { useProfileQuery } from '~/services';
+import { useGetProfileQuery } from '~/services';
 import { SearchInput } from '~components/input';
 import { KeyboardAvoidingScrollView, View } from '~components/themed';
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '~components/ui/avatar';
@@ -16,7 +16,7 @@ import { SearchIcon } from '~components/ui/icon';
 export default function Home(): React.JSX.Element {
     const router = useRouter();
 
-    useProfileQuery();
+    useGetProfileQuery();
 
     const profile = useSelector((state: RootState) => state.user.profile);
 

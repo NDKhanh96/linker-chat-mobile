@@ -11,13 +11,13 @@ import { Divider } from '~components/line';
 import { AvatarPicker } from '~components/picker';
 import { KeyboardAvoidingScrollView, Text, View } from '~components/themed';
 
-import { useProfileQuery, useUpdateProfileMutation } from '~/services';
+import { useGetProfileQuery, useUpdateProfileMutation } from '~/services';
 import { updateProfileSchema } from '~utils/form-schema';
 import { t } from '~utils/locales';
 
 export default function Profile(): React.JSX.Element {
     const router = useRouter();
-    const { data: profileData, isLoading } = useProfileQuery();
+    const { data: profileData, isLoading } = useGetProfileQuery();
     const [updateProfile] = useUpdateProfileMutation();
 
     const {

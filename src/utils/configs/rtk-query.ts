@@ -44,5 +44,6 @@ const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, unknown> = asyn
 export const API = createApi({
     reducerPath: 'api',
     baseQuery: baseQueryHandler,
+    tagTypes: ['Conversation'],
     endpoints: () => ({}),
 });

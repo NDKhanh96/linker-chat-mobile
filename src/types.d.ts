@@ -46,3 +46,20 @@ export type SocialMediaIcon = {
 };
 
 export type HandleOAuth = (data: LoginAppMfa | LoginJwt | Error) => void;
+
+export type CursorPaginationResponse<T> = {
+    data: T[];
+    nextCursor: string | null;
+    hasMore: boolean;
+    limit: number;
+};
+
+export type OffsetPaginationResponse<T> = {
+    data: T[];
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+};

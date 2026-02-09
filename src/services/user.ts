@@ -3,37 +3,12 @@ import type { z } from 'zod';
 import { setProfile, showToast } from '~/redux/slices';
 import { API } from '~utils/configs';
 import { BASE_URL } from '~utils/environment';
-import { getMutationErrorMessage } from '~utils/error-handle';
+import { getFetchErrorMessage } from '~utils/error-handle';
 import type { updateProfileSchema } from '~utils/form-schema';
-
-type Profile = {
-    id: number;
-    version: number;
-    firstName: string;
-    lastName: string;
-    avatar: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    isActive: boolean;
-    account: {
-        id: number;
-        version: number;
-        email: string;
-        password: string;
-        enableTotp: boolean;
-        enableEmailOtp: boolean;
-        isCredential: boolean;
-        isActive: boolean;
-        createdAt: string;
-        updatedAt: string;
-        deletedAt: string | null;
-    };
-};
 
 const userApi = API.injectEndpoints({
     endpoints: build => ({
-        profile: build.query<Profile, void>({
+        getProfile: build.query<Profile, void>({
             query: () => ({
                 url: 'users/profile',
                 method: 'GET',
@@ -65,7 +40,7 @@ const userApi = API.injectEndpoints({
 
                     dispatch(setProfile({ email, firstName, lastName, avatar }));
                 } catch (error) {
-                    dispatch(showToast({ title: 'Error', description: getMutationErrorMessage(error), type: 'error' }));
+                    dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
             },
         }),
@@ -91,7 +66,7 @@ const userApi = API.injectEndpoints({
                  * đồng thời nếu gọi API thất bại thì hoàn tác lại thay đổi UI trong phần catch
                  */
                 const patchResult = dispatch(
-                    userApi.util.updateQueryData('profile', undefined, draft => {
+                    userApi.util.updateQueryData('getProfile', undefined, draft => {
                         Object.assign(draft, {
                             firstName: arg.firstName,
                             lastName: arg.lastName,
@@ -118,7 +93,7 @@ const userApi = API.injectEndpoints({
                     dispatch(showToast({ title: 'Success', description: 'Profile updated successfully', type: 'success' }));
                 } catch (error) {
                     patchResult.undo();
-                    dispatch(showToast({ title: 'Error', description: getMutationErrorMessage(error), type: 'error' }));
+                    dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
             },
         }),
@@ -126,4 +101,47 @@ const userApi = API.injectEndpoints({
     overrideExisting: true,
 });
 
-export const { useProfileQuery, useUpdateProfileMutation } = userApi;
+export type Profile = {
+    id: number;
+    version: number;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    createdBy: number | null;
+    updatedBy: number | null;
+    deletedBy: number | null;
+    isActive: boolean;
+    account: Account;
+};
+
+type Account = {
+    id: number;
+    version: number;
+    email: string;
+    password: string;
+    enableTotp: boolean;
+    enableEmailOtp: boolean;
+    isCredential: boolean;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    createdBy: number | null;
+    updatedBy: number | null;
+    deletedBy: number | null;
+    refreshToken: RefreshToken;
+    user: Profile;
+};
+
+type RefreshToken = {
+    id: number;
+    token: string;
+    expiresAt: string;
+    createdAt: string;
+    account: Account;
+};
+
+export const { useGetProfileQuery, useUpdateProfileMutation } = userApi;

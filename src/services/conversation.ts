@@ -1,13 +1,15 @@
 import { z } from 'zod';
 
 import { showToast } from '~/redux/slices';
+import type { ConversationMember, Message } from '~/services';
+import type { CursorPaginationResponse } from '~/types';
 import { API } from '~utils/configs';
 import { getFetchErrorMessage } from '~utils/error-handle';
 import type { createConversationSchema } from '~utils/form-schema';
 
-const conversationApi = API.injectEndpoints({
+export const conversationApi = API.injectEndpoints({
     endpoints: build => ({
-        listConversation: build.query<Conversation, { cursor?: string; limit?: number }>({
+        listConversation: build.query<CursorPaginationResponse<Conversation>, { cursor?: string; limit?: number }>({
             query: params => ({
                 url: 'conversations',
                 method: 'GET',
@@ -114,12 +116,23 @@ export const {
 
 export type Conversation = {
     id: number;
-    avatar: string | null;
-    description: string | null;
-    lastMessageAt: string | null;
-    createdAt: string;
-    updatedAt: string | null;
+    type: ConversationType;
+    title: string;
+    avatar: string;
+    description: string;
+    lastMessage: Message | null;
+    lastMessageAt: Date | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+    deletedAt: Date | null;
     createdBy: number | null;
     updatedBy: number | null;
     deletedBy: number | null;
+    members: ConversationMember[];
+    messages: Message[];
 };
+
+enum ConversationType {
+    DIRECT = 'direct',
+    GROUP = 'group',
+}

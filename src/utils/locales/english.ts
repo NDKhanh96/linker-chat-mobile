@@ -54,4 +54,10 @@ export default {
     menu: {
         use_western_name_order: 'Use Western Name Order',
     },
+    date: {
+        yesterday: 'Yesterday',
+    },
+    message: {
+        no_messages_yet: 'No messages yet',
+    },
 };

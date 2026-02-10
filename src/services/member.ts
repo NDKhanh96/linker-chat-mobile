@@ -83,7 +83,7 @@ const memberApi = API.injectEndpoints({
 
 export const { useAddMemberMutation, useRemoveMemberMutation, useLeaveMemberMutation } = memberApi;
 
-type ConversationMember = {
+export type ConversationMember = {
     conversationId: number;
     userId: number;
     role: string;

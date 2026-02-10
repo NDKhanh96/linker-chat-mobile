@@ -117,7 +117,7 @@ export const {
     useLazyMessageListQuery,
 } = messageApi;
 
-type Message = {
+export type Message = {
     id: number;
     conversation: Conversation;
     sender: Profile;

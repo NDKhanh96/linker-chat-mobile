@@ -56,6 +56,12 @@ const vi: typeof en = {
     menu: {
         use_western_name_order: 'Sử dụng thứ tự tên phương Tây',
     },
+    date: {
+        yesterday: 'Hôm qua',
+    },
+    message: {
+        no_messages_yet: 'Chưa có tin nhắn',
+    },
 };
 
 export default vi;

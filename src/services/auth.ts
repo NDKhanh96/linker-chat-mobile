@@ -4,7 +4,6 @@ import { showToast } from '~/redux/slices';
 import type { Account, AuthToken, LoginResponse } from '~/types';
 import { storeTokens } from '~utils/common';
 import { API } from '~utils/configs';
-import { BASE_URL } from '~utils/environment';
 import { getFetchErrorMessage } from '~utils/error-handle';
 import type { changePasswordSchema, loginSchema, registerSchema } from '~utils/form-schema';
 
@@ -18,15 +17,7 @@ const authApi = API.injectEndpoints({
             }),
 
             async transformResponse(response: Account) {
-                const avatar = response.user.avatar || '';
-
-                return {
-                    ...response,
-                    user: {
-                        ...response.user,
-                        avatar: BASE_URL + avatar,
-                    },
-                };
+                return response;
             },
 
             onQueryStarted: async (queryArgument, mutationLifeCycleApi) => {

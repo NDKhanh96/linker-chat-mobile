@@ -2,7 +2,6 @@ import type { z } from 'zod';
 
 import { setProfile, showToast } from '~/redux/slices';
 import { API } from '~utils/configs';
-import { BASE_URL } from '~utils/environment';
 import { getFetchErrorMessage } from '~utils/error-handle';
 import type { updateProfileSchema } from '~utils/form-schema';
 
@@ -15,12 +14,7 @@ const userApi = API.injectEndpoints({
             }),
 
             async transformResponse(response: Profile) {
-                const avatar = response.avatar || '';
-
-                return {
-                    ...response,
-                    avatar: BASE_URL + avatar,
-                };
+                return response;
             },
 
             onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
@@ -36,9 +30,10 @@ const userApi = API.injectEndpoints({
                         firstName,
                         lastName,
                         avatar,
+                        id,
                     } = data;
 
-                    dispatch(setProfile({ email, firstName, lastName, avatar }));
+                    dispatch(setProfile({ email, firstName, lastName, avatar, id }));
                 } catch (error) {
                     dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
@@ -52,12 +47,7 @@ const userApi = API.injectEndpoints({
             }),
 
             async transformResponse(response: Profile) {
-                const avatar = response.avatar || '';
-
-                return {
-                    ...response,
-                    avatar: BASE_URL + avatar,
-                };
+                return response;
             },
 
             onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
@@ -87,9 +77,10 @@ const userApi = API.injectEndpoints({
                         firstName,
                         lastName,
                         avatar,
+                        id,
                     } = data;
 
-                    dispatch(setProfile({ email, firstName, lastName, avatar }));
+                    dispatch(setProfile({ email, firstName, lastName, avatar, id }));
                     dispatch(showToast({ title: 'Success', description: 'Profile updated successfully', type: 'success' }));
                 } catch (error) {
                     patchResult.undo();

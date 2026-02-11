@@ -7,6 +7,7 @@ type InitialState = {
         firstName: string;
         lastName: string;
         avatar: string;
+        id: number;
     };
     nameOrder: 'western' | 'eastern';
 };
@@ -17,6 +18,7 @@ const initialState: InitialState = {
         firstName: '',
         lastName: '',
         avatar: '',
+        id: 0,
     },
     nameOrder: SecureStore.getItem('nameOrder') === 'western' ? 'western' : 'eastern',
 };

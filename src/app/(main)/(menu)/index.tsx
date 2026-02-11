@@ -15,6 +15,7 @@ import { setNameOrder } from '~/redux/slices';
 import { useAppDispatch, type RootState } from '~/redux/store';
 import type { RootNav } from '~/types';
 import Colors from '~utils/constants/colors';
+import { BASE_URL } from '~utils/environment';
 import { t } from '~utils/locales';
 
 /**
@@ -59,7 +60,7 @@ export default function MainMenu(): React.JSX.Element {
                         {profile.avatar?.trim() && (
                             <AvatarImage
                                 source={{
-                                    uri: profile.avatar,
+                                    uri: BASE_URL + profile.avatar,
                                 }}
                             />
                         )}

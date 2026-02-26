@@ -17,7 +17,7 @@ module.exports = defineConfig([
         },
         rules: {
             'prettier/prettier': 'error',
-            'no-console': ['warn', { allow: ['warn', 'error', 'clear'] }],
+            'no-console': ['warn', { allow: ['warn', 'error', 'clear', 'info'] }],
             'no-debugger': 'error',
             'no-dupe-keys': 'error',
             'no-duplicate-case': 'error',

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { Conversation, Profile } from 'src/services';
 import { showToast } from '~/redux/slices';
+import { SOCKET_NAMESPACES, subscribeSocketReady } from '~/services/socket';
 import type { CursorPaginationResponse } from '~/types';
 import { API } from '~utils/configs';
 import { getFetchErrorMessage } from '~utils/error-handle';
@@ -68,6 +69,22 @@ const messageApi = API.injectEndpoints({
                     dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
             },
+
+            onCacheEntryAdded: async (_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) => {
+                await cacheDataLoaded;
+
+                const unsubscribe = subscribeSocketReady(SOCKET_NAMESPACES.chat, sock => {
+                    sock.on('unread:updated', (data: UnreadSummary) => {
+                        updateCachedData(draft => {
+                            draft.total = data.total;
+                            draft.byConversation = data.byConversation;
+                        });
+                    });
+                });
+
+                await cacheEntryRemoved;
+                unsubscribe();
+            },
         }),
 
         sendMessage: build.mutation<Message, SendMessageBody>({
@@ -98,6 +115,49 @@ const messageApi = API.injectEndpoints({
                 } catch (error) {
                     dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
+            },
+
+            onCacheEntryAdded: async ({ id }, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) => {
+                await cacheDataLoaded;
+
+                const unsubscribe = subscribeSocketReady(SOCKET_NAMESPACES.chat, sock => {
+                    sock.on('message:send', (message: Message) => {
+                        if (String(message.conversation.id) !== id) {
+                            return;
+                        }
+
+                        updateCachedData(draft => {
+                            draft.data.unshift(message);
+                        });
+                    });
+
+                    sock.on('message:updated', (message: Message) => {
+                        if (String(message.conversation.id) !== id) {
+                            return;
+                        }
+
+                        updateCachedData(draft => {
+                            const index = draft.data.findIndex(m => m.id === message.id);
+
+                            if (index !== -1) {
+                                draft.data[index] = message;
+                            }
+                        });
+                    });
+
+                    sock.on('message:deleted', ({ messageId, conversationId }: { messageId: number; conversationId: number }) => {
+                        if (String(conversationId) !== id) {
+                            return;
+                        }
+
+                        updateCachedData(draft => {
+                            draft.data = draft.data.filter(m => m.id !== messageId);
+                        });
+                    });
+                });
+
+                await cacheEntryRemoved;
+                unsubscribe();
             },
         }),
     }),

@@ -22,7 +22,7 @@ const baseQueryHandler: BaseQueryFn<string | FetchArgs, unknown, unknown> = asyn
     const result = await baseQuery(args, api, extraOptions);
 
     if (result.error?.status === 401) {
-        router.navigate('/(auth)');
+        router.replace('/(auth)');
         void Promise.allSettled([SecureStore.deleteItemAsync('accessToken'), SecureStore.deleteItemAsync('refreshToken')]);
     }
 

@@ -70,7 +70,7 @@ const messageApi = API.injectEndpoints({
             },
         }),
 
-        sendMessage: build.mutation<Message, z.infer<typeof sendMessageSchema> & { conversationId: string | number }>({
+        sendMessage: build.mutation<Message, SendMessageBody>({
             query: ({ conversationId, ...body }) => ({
                 url: `conversations/${conversationId}/messages`,
                 method: 'POST',
@@ -139,3 +139,5 @@ type UnreadSummary = {
     total: number;
     byConversation: Record<number, number>;
 };
+
+type SendMessageBody = z.infer<typeof sendMessageSchema> & { conversationId: string | number; replyToId?: number };

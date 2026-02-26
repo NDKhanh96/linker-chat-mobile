@@ -4,9 +4,11 @@ import { Platform, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import type { RootState } from '~/redux/store';
+import { useGetProfileQuery, useListConversationQuery } from '~/services';
+import { BASE_URL } from '~utils/environment';
 import { t } from '~utils/locales';
 
-import { useGetProfileQuery } from '~/services';
+import { ConversationItem } from '~components/conversation';
 import { SearchInput } from '~components/input';
 import { KeyboardAvoidingScrollView, View } from '~components/themed';
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from '~components/ui/avatar';
@@ -17,12 +19,13 @@ export default function Home(): React.JSX.Element {
     const router = useRouter();
 
     useGetProfileQuery();
+    const { data } = useListConversationQuery({});
 
     const profile = useSelector((state: RootState) => state.user.profile);
 
     const handleSearch = debounce((text: string) => {
         if (text.trim()) {
-            // TODO: Gọi API search
+            // TODO: Gọi API search và kiểm tra xem để debounce thế này ok chưa, có cần dc bọ bới useCallback hay useMemo không
         }
     }, 300);
 
@@ -30,6 +33,11 @@ export default function Home(): React.JSX.Element {
         router.navigate({ pathname: '/(main)/(menu)' });
     };
 
+    const handlePressConversation = (conversation: NonNullable<typeof data>['data'][number]) => {
+        router.navigate({ pathname: '/(main)/conversation/[conversationId]', params: { conversationId: conversation.id.toString() } });
+    };
+
+    // TODO: Đổi thành KeyboardAvoidingView để có thể dùng Flatlist ở trong cho ConversationItem
     return (
         <KeyboardAvoidingScrollView className={`px-5 flex-1 gap-y-8 ${Platform.OS === 'android' ? 'mt-10' : ''}`}>
             <View className="flex-row items-center justify-between">
@@ -44,7 +52,7 @@ export default function Home(): React.JSX.Element {
                         {profile.avatar?.trim() && (
                             <AvatarImage
                                 source={{
-                                    uri: profile.avatar,
+                                    uri: BASE_URL + profile.avatar,
                                 }}
                             />
                         )}
@@ -62,6 +70,10 @@ export default function Home(): React.JSX.Element {
                 }}
                 iconProps={{ as: SearchIcon, size: 'xl', className: 'rounded-sm' }}
             />
+
+            {data?.data.map(item => (
+                <ConversationItem key={item.id} conversation={item} handlePressConversation={handlePressConversation} />
+            ))}
         </KeyboardAvoidingScrollView>
     );
 }

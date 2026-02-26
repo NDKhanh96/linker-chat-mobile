@@ -6,6 +6,10 @@ import { Input, InputField, InputIcon, InputSlot } from '~components/ui/input';
 
 type PasswordInputProps = {
     /**
+     * Props cho view container ngoài cùng
+     */
+    containerProps?: React.ComponentProps<typeof View>;
+    /**
      * Props cho view container (kế thừa toàn bộ từ component View của react native).
      */
     inputProps?: React.ComponentProps<typeof Input>;
@@ -37,10 +41,11 @@ type PasswordInputProps = {
  * Input cơ bản.
  */
 export const InputBase = (props: PasswordInputProps) => {
-    const { inputProps, inputFieldProps, iconProps, errorText, label, required } = props;
+    const { containerProps, inputProps, inputFieldProps, iconProps, errorText, label, required } = props;
+    const { className, ...restContainerProps } = containerProps ?? {};
 
     return (
-        <View className="gap-y-3">
+        <View {...restContainerProps} className={['gap-y-3', className].filter(Boolean).join(' ')}>
             {label ? (
                 <Text className="text-base font-semibold">
                     {label}

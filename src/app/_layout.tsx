@@ -10,6 +10,7 @@ import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux';
 
+import { useSocketInit } from '~/hooks';
 import { store } from '~/redux/store';
 import SpaceMono from '~assets/fonts/SpaceMono-Regular.ttf';
 import { SafeAreaView } from '~components/themed';
@@ -25,6 +26,8 @@ export {
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+    useSocketInit();
+
     const [loaded, error] = useFonts({
         SpaceMono,
         ...FontAwesome.font,

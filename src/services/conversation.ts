@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { showToast } from '~/redux/slices';
 import type { ConversationMember, Message } from '~/services';
+import { SOCKET_NAMESPACES, subscribeSocketReady } from '~/services/socket';
 import type { CursorPaginationResponse } from '~/types';
 import { API } from '~utils/configs';
 import { getFetchErrorMessage } from '~utils/error-handle';
@@ -24,6 +25,41 @@ export const conversationApi = API.injectEndpoints({
                 } catch (error) {
                     dispatch(showToast({ title: 'Error', description: getFetchErrorMessage(error), type: 'error' }));
                 }
+            },
+
+            onCacheEntryAdded: async (_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) => {
+                await cacheDataLoaded;
+
+                const unsubscribe = subscribeSocketReady(SOCKET_NAMESPACES.chat, sock => {
+                    sock.on('conversation:new', (conversation: Conversation) => {
+                        updateCachedData(draft => {
+                            draft.data.unshift(conversation);
+                        });
+                    });
+
+                    sock.on('conversation:lastMessage', ({ conversationId, message }: { conversationId: number; message: Message }) => {
+                        updateCachedData(draft => {
+                            const index = draft.data.findIndex(c => c.id === conversationId);
+
+                            if (index !== -1) {
+                                const [conversation] = draft.data.splice(index, 1);
+
+                                conversation.lastMessage = message;
+                                conversation.lastMessageAt = message.createdAt;
+                                draft.data.unshift(conversation);
+                            }
+                        });
+                    });
+
+                    sock.on('conversation:deleted', ({ conversationId }: { conversationId: number }) => {
+                        updateCachedData(draft => {
+                            draft.data = draft.data.filter(c => c.id !== conversationId);
+                        });
+                    });
+                });
+
+                await cacheEntryRemoved;
+                unsubscribe();
             },
         }),
 
@@ -121,10 +157,10 @@ export type Conversation = {
     avatar: string;
     description: string;
     lastMessage: Message | null;
-    lastMessageAt: Date | null;
-    createdAt: Date;
-    updatedAt: Date | null;
-    deletedAt: Date | null;
+    lastMessageAt: string | null;
+    createdAt: string;
+    updatedAt: string | null;
+    deletedAt: string | null;
     createdBy: number | null;
     updatedBy: number | null;
     deletedBy: number | null;
@@ -132,7 +168,7 @@ export type Conversation = {
     messages: Message[];
 };
 
-enum ConversationType {
+export enum ConversationType {
     DIRECT = 'direct',
     GROUP = 'group',
 }
